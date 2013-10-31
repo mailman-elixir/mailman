@@ -1,1 +1,5 @@
-[ "apprentice": {:git, "git://github.com/ElixirCasts/apprentice.git", "b9306b8316385c63d1e18492623a5cd3dc33df16", []} ]
+[ "amrita": {:git, "git://github.com/josephwilk/amrita.git", "7570eb766fa0506e4c08d241f5359dff9135f961", []},
+  "apprentice": {:git, "git://github.com/ElixirCasts/apprentice.git", "b9306b8316385c63d1e18492623a5cd3dc33df16", []},
+  "gen_smtp": {:git, "https://github.com/Vagabond/gen_smtp.git", "2d75ba1ae5484443c1aae38aec6343f9b6e24870", []},
+  "meck": {:git, "git://github.com/eproxus/meck.git", "62265e4a89297b3415502351a35082933225d1af", [{:branch, "develop"}]},
+  "trane": {:git, "https://github.com/massemanet/trane.git", "4cc20f4e5c2363b862b68be454f4c7f96ea9d442", []} ]
