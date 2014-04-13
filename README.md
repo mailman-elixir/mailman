@@ -115,16 +115,6 @@ of having some way of returning e. g. different configs
 for different emails.
 
 Example:
-```elixir
-defmodule MyApp do
-  defmodule EmailsComposer do
-    def templates_root do
-      "app/views/emails"
-    end
-  end
-
-  defmodule RealAdapter do
-    use Mailman.ExternalSmtpAdapter
 
 ```elixir
 defimpl Mailman.Mailer, for: Mailman.Email do
