@@ -1,52 +1,30 @@
 defmodule Mailman.Emails do
   
   @doc "Returns a tuple with all data needed for the underlying adapter to send"
-  def render(email) when is_record(email, Mailman.Email) do
-    to_envelope(email) |> to_message
+  def render(email, composer) do
+    to_envelope(email, composer) |> to_message
   end
 
-  def to_envelope(email) when is_record(email, Mailman.Email) do
-    Mailman.Envelope.new [
+  def to_envelope(email, composer) do
+    %Mailman.Envelope{
       subject: email.subject,
       from: email.from,
       to: email.to,
       cc: email.cc,
       bcc: email.bcc,
-      parts: compile_parts(email)
-      ]
+      parts: compile_parts(email, composer)
+      }
   end
 
-  def compile_parts(email) when is_record(email, Mailman.Email) do
+  def compile_parts(email, composer) do
     [
-      html: compile_part(:html, email),
-      plain: compile_part(:plain, email),
-      attachments: Enum.map(email.attachments, &compile_part(:attachment, &1))
+      html: Mailman.Composer.compile_part(composer, :html, email),
+      plain: Mailman.Composer.compile_part(composer, :text, email),
+      attachments: Enum.map(email.attachments, &Mailman.Composer.compile_part(composer, :attachment, &1))
     ]
   end
 
-  def compile_part(:html, email) when is_record(email, Mailman.Email) do
-    res = Path.join(Mailman.Composer.root_path(email), email.name <> ".html.eex") |>
-      File.read
-    case res do
-      {:ok, template} -> EEx.eval_string template, email.data
-      _ -> nil
-    end
-  end
-
-  def compile_part(:plain, email) when is_record(email, Mailman.Email) do
-    res = Path.join(Mailman.Composer.root_path(email), email.name <> ".text.eex") |>
-      File.read
-    case res do
-      {:ok, template} -> EEx.eval_string template, email.data
-      _ -> nil
-    end
-  end
-
-  def compile_part(:attachments, email) when is_record(email, Mailman.Email) do
-    []
-  end
-
-  def to_message(envelope) when is_record(envelope, Mailman.Envelope) do
+  def to_message(envelope)  do
     case has_alternatives?(envelope) do
       true -> compile_alternatives(envelope)
       false -> case has_html?(envelope) do
@@ -68,15 +46,15 @@ defmodule Mailman.Emails do
     has_html?(envelope) && has_plain?(envelope)
   end
 
-  def compile_plain(envelope) when is_record(envelope, Mailman.Envelope) do
+  def compile_plain(envelope)  do
     "#{header_for(envelope)} \r\n\r\n#{DataEncoding.quoted_from(envelope.parts[:plain])}" 
   end
 
-  def compile_alternatives(envelope) when is_record(envelope, Mailman.Envelope) do
+  def compile_alternatives(envelope)  do
     "#{header_for(envelope)} \r\n\r\n--#{boundary_for(envelope)}\r\n#{plain_part(envelope)}\r\n\r\n--#{boundary_for(envelope)}\r\n#{html_part(envelope)}\r\n\r\n--#{boundary_for(envelope)}--\r\n " 
   end
 
-  def compile_alternatives_from_html(envelope) when is_record(envelope, Mailman.Envelope) do
+  def compile_alternatives_from_html(envelope)  do
     "#{header_for(envelope)} \r\n\r\n#{plain_from_html_part(envelope)}\r\n\r\n#{html_part(envelope)}\r\n\r\n--#{boundary_for(envelope)}--\r\n " 
   end
   

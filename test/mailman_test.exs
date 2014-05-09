@@ -1,25 +1,27 @@
 defmodule MailmanTest do
   use ExUnit.Case
 
-  defimpl Mailman.Mailer, for: Mailman.Email do
-    def config(email) do
-      Mailman.TestConfig[
-      ]
+  defmodule MyApp.Mailer do
+    def deliver(email) do
+      Mailman.deliver(email, config)
     end
-  end
 
-  defimpl Mailman.Composer, for: Mailman.Email do
-    def root_path(email) do
-      "test/views"
+    def config do
+      %Mailman.Context{
+          config: %Mailman.TestConfig{},
+          composer: %Mailman.EexComposeConfig{
+            root_path: "test/views"
+            }
+        }
     end
   end
 
   test "it works" do
-    Mailman.deliver testing_email
+    MyApp.Mailer.deliver testing_email
   end
 
   def testing_email do
-    Mailman.Email[
+    %Mailman.Email{
       name: "hello",
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
@@ -27,7 +29,7 @@ defmodule MailmanTest do
       data: [
         name: "Yo"
         ]
-      ]
+      }
   end
 
 end

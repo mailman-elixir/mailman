@@ -1,8 +1,7 @@
 defmodule Mailman.ExternalSmtpAdapter do
 
   @doc "Delivers an email based on specified config"
-  def deliver(config, email) do
-    message = Mailman.Emails.render(email)
+  def deliver(config, email, message) do
     relay_config = [
       relay: config.relay, 
       username: config.username, 
@@ -12,7 +11,7 @@ defmodule Mailman.ExternalSmtpAdapter do
       tls: config.tls, 
       auth: config.auth
       ]
-    :gen_smtp_client.send_blocking {
+    ret = :gen_smtp_client.send_blocking {
         email.from, 
         [ email.to ], 
         message

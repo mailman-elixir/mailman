@@ -1,7 +1,6 @@
 defmodule Mailman.TestingAdapter do
 
-  def deliver(_, email) do
-    message = Mailman.Emails.render(email)
+  def deliver(_, email, message) do
     { :ok, message }
   end
   
