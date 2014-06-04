@@ -17,7 +17,7 @@ defmodule MailmanTest do
   end
 
   test "it works" do
-    MyApp.Mailer.deliver testing_email
+    {:ok, _} = Task.await MyApp.Mailer.deliver(testing_email)
   end
 
   def testing_email do

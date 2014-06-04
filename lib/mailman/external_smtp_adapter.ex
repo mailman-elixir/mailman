@@ -11,12 +11,13 @@ defmodule Mailman.ExternalSmtpAdapter do
       tls: config.tls, 
       auth: config.auth
       ]
-    ret = :gen_smtp_client.send_blocking {
+    Task.async fn ->
+      :gen_smtp_client.send_blocking {
         email.from, 
         [ email.to ], 
         message
       }, relay_config
-    { :ok, message } # TODO: return results of all delivieries
+    end
   end
 
 end
