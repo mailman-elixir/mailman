@@ -17,7 +17,8 @@ defmodule MailmanTest do
   end
 
   test "it works" do
-    {:ok, _} = Task.await MyApp.Mailer.deliver(testing_email)
+    {:ok, message} = Task.await MyApp.Mailer.deliver(testing_email)
+    IO.puts message
   end
 
   def testing_email do
@@ -26,6 +27,8 @@ defmodule MailmanTest do
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
       to: [ "testy@tester123456.com" ],
+      cc: [ "testy2#tester1234.com", "abcd@defd.com" ],
+      bcc: [ "1234@wsd.com" ],
       data: [
         name: "Yo"
         ]
