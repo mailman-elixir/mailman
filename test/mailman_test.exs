@@ -1,5 +1,5 @@
 defmodule MailmanTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule MyApp.Mailer do
     def deliver(email) do
@@ -16,11 +16,6 @@ defmodule MailmanTest do
     end
   end
 
-  test "it works" do
-    {:ok, message} = Task.await MyApp.Mailer.deliver(testing_email)
-    IO.puts message
-  end
-
   def testing_email do
     %Mailman.Email{
       name: "hello",
@@ -33,6 +28,14 @@ defmodule MailmanTest do
         name: "Yo"
         ]
       }
+  end
+
+  test "sending testing emails works" do
+    {:ok, message} = Task.await MyApp.Mailer.deliver(testing_email)
+  end
+
+  test "#deliver returns Task" do
+    assert MyApp.Mailer.deliver(testing_email).__struct__ == Task
   end
 
 end

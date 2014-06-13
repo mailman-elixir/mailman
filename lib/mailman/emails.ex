@@ -91,7 +91,15 @@ defmodule Mailman.Emails do
 
   def header_for(envelope) do
     content_type = main_content_type_for(envelope)
-    "Subject: #{envelope.subject} \r\nFrom: #{envelope.from} \r\nTo: #{envelope.to} \r\nCc: #{Enum.join(envelope.cc, ", ")} \r\nBcc: #{Enum.join(envelope.bcc, ", ")} \r\nMIME-Version: 1.0 \r\n#{content_type} "
+    [ 
+      "Subject: #{envelope.subject}", 
+      "From: #{envelope.from}", 
+      "To: #{envelope.to}",
+      "Cc: #{Enum.join(envelope.cc, ", ")}",
+      "Bcc: #{Enum.join(envelope.bcc, ", ")}",
+      "MIME-Version: 1.0", 
+      "#{content_type} "
+    ] |> Enum.join " \r\n"
   end
 
   def boundary_for(envelope) do
