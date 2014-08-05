@@ -1,5 +1,5 @@
 defmodule Mailman.EexComposeConfig do
-  defstruct root_path: ""
+  defstruct root_path: "", assets_path: ""
 end
 
 defimpl Mailman.Composer, for: Mailman.EexComposeConfig do

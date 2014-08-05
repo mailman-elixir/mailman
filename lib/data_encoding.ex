@@ -1,13 +1,17 @@
 defmodule DataEncoding do
-  require IEx
 
   def quoted_from(text) do
-    align_quoted(code_quoted(text))
+    code_quoted(text) |>
+      align_quoted
+  end
+
+  def convert_bare_newlines(text) do
+    Regex.replace ~r/((?<!\r)\n|(?<!\n)\r)/, text, "\r\n"
   end
   
   # Returns a string with a hex value based on given integer
   def int_to_hex_string(code) do
-    integer_to_list(code, 16) |> to_string
+    Integer.to_char_list(code, 16) |> to_string
   end
 
   def int_to_quoted_string(code) do

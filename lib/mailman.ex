@@ -6,11 +6,12 @@ defmodule Mailman do
 
   defprotocol Composer do
     def compile_part(config, mode, email)
+    def compile_part(config, mode, email, body)
   end
 
-  @doc "Deliver given email"
+  @doc "Delivers given email and returns a Task"
   def deliver(email, context) do
-    message = Mailman.Emails.render(email, context.composer)
+    message = Mailman.Render.render(email, context.composer)
     Adapter.deliver(context.config, email, message)
   end
 
