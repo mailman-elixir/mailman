@@ -87,11 +87,12 @@ Pictures!
     assert Enum.count(email1.attachments) == Enum.count(email2.attachments)
     Enum.each email1.attachments, fn(attachment) ->
       found = Enum.find email2.attachments, fn(a) ->
-        a.data == attachment.data
-        a.mime_type == attachment.mime_type
-        a.mime_sub_type == attachment.mime_sub_type
+        a.data == attachment.data &&
+          a.mime_type == attachment.mime_type &&
+          a.mime_sub_type == attachment.mime_sub_type
       end
       assert found != nil
+      assert found.file_path == Path.basename(found.file_path)
     end
   end
 
