@@ -17,6 +17,7 @@ defmodule Mailman.ExternalSmtpAdapter do
         [ email.to ], 
         message
       }, relay_config
+      { :ok, message }
     end
   end
 
