@@ -2,8 +2,7 @@ defmodule MailmanTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    pid = :gen_smtp_server.start :smtp_server_example, 
-      [[], [{:allow_bare_newlines, :true}, {:port, 1234}]]
+    pid = Mailman.LocalServer.start(1234)
     :ok
   end
 
@@ -14,7 +13,7 @@ defmodule MailmanTest do
 
     def config do
       %Mailman.Context{
-          config:   %Mailman.LocalSmtpConfig{ port: 1234 }, #   %Mailman.TestConfig{},
+          config:   %Mailman.LocalSmtpConfig{ port: 1234 },
           composer: %Mailman.EexComposeConfig{}
         }
     end

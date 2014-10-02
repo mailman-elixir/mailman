@@ -1,8 +1,8 @@
 ## Mailman
 
-Mailman provides a clean way of defining mailers in your Elixir applications. It allows you to send multi-part email messages containing text and html parts. It encodes messages with a proper quoted-printable encoding.
+Mailman provides a clean way of defining mailers in your Elixir apps. It allows you to send multi-part email messages containing text and html parts. It encodes messages with a proper quoted-printable encoding. It also allows you to send attachments.
 
-To be able to send emails, you only need to provide a SMTP config (like an external SMTP server along with credentials etc.). You also need to define your emails along with text and/or html templates. Mailman uses Eex as a templating language but will likely be extended to provide other choices as well in the future.
+To be able to send emails, you only need to provide the SMTP config (like an external SMTP server along with credentials etc.). You also need to define your emails along with text and/or html templates. Mailman uses Eex as a templating language but will likely be extended to provide other choices as well in the future.
 
 ### A quick example
 
@@ -14,10 +14,8 @@ To be able to send emails, you only need to provide a SMTP config (like an exter
 
     def config do
       %Mailman.Context{
-          config: %Mailman.TestConfig{},
-          composer: %Mailman.EexComposeConfig{
-            root_path: "test/views"
-            }
+          config:   %Mailman.LocalSmtpConfig{ port: 1234 },
+          composer: %Mailman.EexComposeConfig{}
         }
     end
   end
@@ -25,20 +23,24 @@ To be able to send emails, you only need to provide a SMTP config (like an exter
   # somewhere else:
   def testing_email do
     %Mailman.Email{
-      name: "hello",
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
       to: [ "testy@tester123456.com" ],
+      cc: [ "testy2#tester1234.com", "abcd@defd.com" ],
+      bcc: [ "1234@wsd.com" ],
       data: [
         name: "Yo"
-        ]
+        ],
+      text: "Hello! <%= name %> These are Unicode: qżźół",
+      html: """
+<html>
+<body>
+ <b>Hello! <%= name %></b> These are Unicode: qżźół
+</body>
+</html>
+      """
       }
   end
-```
-
-app/views/hello.text.eex:
-```elixir
-Hello! <%= name %>!
 ```
 
 And then to actually send an email:
@@ -57,23 +59,23 @@ There are two parts in the configuration data for how Mailman works:
 The first one specifies how emails will be rendered. The second one, how
 will they be delivered. 
 
-All those options correspond with ones defined
-in the **gen_smtp** library. You can find out more
-about them here: https://github.com/Vagabond/gen_smtp
+For now, only the %Mailman.EexComposeConfig{} is available for configuring the composer. The library is ready to support any other composer you migt want to implement.
+
+There are three adapter configs at the moment: external smtp, local smtp and the testing one. The latter will soon support handling the queue of emails to ease testing of the email sending part of your apps. 
+
+You don't access those adaptes directly. Instead, you specify a config of your choice and the library does all the rest for you. The three config options corresponding with adapters are: %Mailman.LocalSmtpConfig{}, %Mailman.SmtpConfig{} and %Mailman.TestConfig{}.
 
 ```elixir
 %Mailman.Context{
-    composer: %Mailman.EexComposeConfig{
-      root_path: "test/views"
-      },
-    config: %Mailman.SmtpConfig{
-      relay: "smtp.yourdomain.com",
-      username: "youruser",
-      password: "password",
-      port: 1234,
-      ssl: true
-      }
+    config:   %Mailman.LocalSmtpConfig{ port: 1234 },
+    composer: %Mailman.EexComposeConfig{}
   }
+```
+
+In this example we're setting up the library to use the local SMTP server created along with the app. In order for this to work you still have to create this process:
+
+```elixir
+pid = Mailman.LocalServer.start(1234)
 ```
 
 ### Defining emails
@@ -81,66 +83,46 @@ about them here: https://github.com/Vagabond/gen_smtp
 The email struct is defined as:
 
 ```elixir
-defmodule Mailman.Email do
-  defstruct name: "", # this has to be the same as your template name on the disk
-    subject: "", 
-    from: "", 
-    to: [], 
-    cc: [], # not in use yet
-    bcc: [], # not in use yet
-    attachments: [], # not in use yet
-    data: %{} # context data for Eex templates
-
-end
+defstruct subject: "", 
+  from: "", 
+  to: [], 
+  cc: [], 
+  bcc: [], 
+  attachments: [], # This has to be %Mailman.Attachment{}. More about attachments below
+  data: %{}, # This is the context for EEx. You put here data for your <%= %> placeholders
+  html: "", # Actual html template
+  text: "", # Actual plain template
+  delivery: nil # If the message was created through parsing of the delivered email - this holds the 'Date' header
 ```
 
-Example:
+### Attaching files
+
+A dedicated struct has been created for describing attachments. In this version, there's a function that takes a binary representing a path to a file that's constructing this struct for you. So you can add attachments to your email definitions like this:
 
 ```elixir
-# The Mailman.deliver/2 takes an email and a context. Strongly advices is to put
-# it inside your own deliver method:
-defmodule MyApp.Mailer do
-  def deliver(email) do
-    Mailman.deliver(email, config)
-  end
-
-  def config do
-    %Mailman.Context{
-        composer: %Mailman.EexComposeConfig{
-          root_path: "test/views"
-          },
-        config: %Mailman.SmtpConfig{
-          relay: "smtp.yourdomain.com",
-          username: "youruser",
-          password: "password",
-          port: 1234,
-          ssl: true
-          }
-      }
-  end
-end
-
-def newsletter_email(user) do
-  %Mailman.Email{
-    name: "hello",
-    subject: "Hello Mailman!",
-    from: "mailman@elixir.com",
-    to: [ "testy@tester123456.com" ],
-    data: [
-      name: "Yo"
-      ]
-    }
-end
+attachments: [
+  Mailman.Attachment.inline!("test/data/blank.png")
+  ],
 ```
 
-Note that Mailman will look into the directory you've 
-provided for templates and will infer whether it should use 
-just plain or plain+html parts. Your **html** part templates
-have to have an ".html.eex" extesnion while plain ones ".text.eex".
+This reads the file from disk, encodes it with base64 and discoveres the proper mime-type. Attachments are also properly decoded from existing emails (More on that below).
+
+### Parsing delivered emails
+
+If you have the source of rendered email as a binary, you can use the Mailman.Email.parse!/1 function to turn it into %Mailman.Email{}.
+
+Here's an example from the test suite:
+
+```elixir
+{:ok, message} = Task.await MyApp.Mailer.deliver(email_with_attachments)
+email = Mailman.Email.parse! message
+```
+
+At this point, if the source contains the 'Date' header (meaning that it was put through a mailing system) — it will have the 'delivery' field non-empty.
 
 ## TODOs
 
-* Unit testing
-* A SMTP config that would use internal server/process coming with :gen_smtp
-* Ability to send attachments
-* Ability to provide CC and BCC
+[√] A SMTP config that would use internal server/process coming with :gen_smtp
+[√] Ability to send attachments
+[√] Ability to provide CC and BCC
+[ ] Unit testing

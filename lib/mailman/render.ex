@@ -4,7 +4,7 @@ defmodule Mailman.Render do
   def render(email, composer) do
     compile_parts(email, composer) |> 
       to_tuple(email) |> 
-      :mimemail.encode |> IO.inspect
+      :mimemail.encode
   end
 
   def to_tuple(part, email) when is_tuple(part) do
@@ -87,8 +87,18 @@ defmodule Mailman.Render do
     [ 
       { "From", email.from },
       { "To", Enum.join(email.to, ",") },
-      { "Subject", email.subject }
-    ]
+      { "Subject", email.subject },
+      { "Cc",  email.cc |> as_list },
+      { "Bcc", email.bcc |> as_list }
+      ] |> Enum.filter fn(i) -> elem(i, 1) != [] end
+  end
+
+  def as_list(value) when is_list(value) do
+    value
+  end
+
+  def as_list(value) when is_binary(value) do
+    [ value ]
   end
 
   def compile_parts(email, composer) do

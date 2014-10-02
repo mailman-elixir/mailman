@@ -132,5 +132,6 @@ defmodule Mailman.Parsing do
   end
 
   def get_delivery(raw) do
+    get_header(raw, "Date")
   end
 end
