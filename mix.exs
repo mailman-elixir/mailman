@@ -7,7 +7,7 @@ defmodule Mailman.Mixfile do
       source_url: "https://github.com/kamilc/mailman",
       homepage_url: "https://github.com/kamilc/mailman",
       version: "0.0.3",
-      elixir: "~> 0.14.0-dev",
+      elixir: "~> 1.0.0",
       deps: deps ]
   end
 

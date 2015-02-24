@@ -23,7 +23,7 @@ defmodule MailmanTest do
     %Mailman.Email{
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
-      to: [ "testy@tester123456.com" ],
+      to: [ "ciemniewski.kamil@gmail.com" ],
       cc: [ "testy2#tester1234.com", "abcd@defd.com" ],
       bcc: [ "1234@wsd.com" ],
       data: [
@@ -44,7 +44,7 @@ defmodule MailmanTest do
     %Mailman.Email{
       subject: "Pictures!",
       from: "mailman@elixir.com",
-      to: [ "testy@tester.com", "testy2@tester.com" ],
+      to: [ "ciemniewski.kamil@gmail.com", "kamil@endpoint.com" ],
       cc: [],
       bcc: [],
       attachments: [
@@ -74,10 +74,10 @@ Pictures!
     {:ok, message} = Task.await MyApp.Mailer.deliver(email_with_attachments)
     email = Mailman.Email.parse! message
     assert email.from == email_with_attachments.from
-    assert email.to   == email_with_attachments.to
+    assert email.to   == Mailman.Render.normalize_addresses(email_with_attachments.to)
     assert email.subject   == email_with_attachments.subject
-    assert email.cc   == email_with_attachments.cc
-    assert email.bcc   == email_with_attachments.bcc
+    assert email.cc   == Mailman.Render.normalize_addresses(email_with_attachments.cc)
+    assert email.bcc   == Mailman.Render.normalize_addresses(email_with_attachments.bcc)
     assert email.text   == email_with_attachments.text
     assert_same_attachments email, email_with_attachments
   end

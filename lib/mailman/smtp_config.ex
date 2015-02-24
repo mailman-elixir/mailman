@@ -1,10 +1,10 @@
 defmodule Mailman.SmtpConfig do
-  defstruct relay: "", 
-    username: "", 
-    password: "", 
-    port: 1111, 
-    ssl: false, 
-    tls: :never, 
+  defstruct relay: "",
+    username: "",
+    password: "",
+    port: 1111,
+    ssl: false,
+    tls: :never,
     auth: :always
 
 end

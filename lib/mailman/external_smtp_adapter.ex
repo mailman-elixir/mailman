@@ -14,7 +14,7 @@ defmodule Mailman.ExternalSmtpAdapter do
     Task.async fn ->
       :gen_smtp_client.send_blocking {
         email.from, 
-        [ email.to ], 
+        email.to, 
         message
       }, relay_config
       { :ok, message }
