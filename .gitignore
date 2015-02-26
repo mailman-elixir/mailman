@@ -4,4 +4,6 @@ erl_crash.dump
 *.ez
 *.swp
 *.swo
+*.swn
+*.swm
 /_build

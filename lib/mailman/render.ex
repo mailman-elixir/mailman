@@ -1,9 +1,9 @@
 defmodule Mailman.Render do
-  
+
   @doc "Returns a tuple with all data needed for the underlying adapter to send"
   def render(email, composer) do
-    compile_parts(email, composer) |> 
-      to_tuple(email) |> 
+    compile_parts(email, composer) |>
+      to_tuple(email) |>
       :mimemail.encode
   end
 
@@ -28,7 +28,7 @@ defmodule Mailman.Render do
   end
 
   def parameters_for({:attachment, body, attachment}) do
-    [ 
+    [
       content_type_params_for(attachment),
       disposition_for(attachment),
       disposition_params_for(attachment)
@@ -61,11 +61,11 @@ defmodule Mailman.Render do
 
   def mime_type_for({type, _}) do
     "text"
-  end 
+  end
 
   def mime_type_for({_, _, attachment}) do
     attachment.mime_type
-  end 
+  end
 
   def mime_subtype_for(parts) when is_list(parts) do
     if Enum.find parts, fn(part) -> elem(part, 0) == :attachment end do
@@ -84,13 +84,13 @@ defmodule Mailman.Render do
   end
 
   def headers_for(email) do
-    [ 
+    [
       { "From", email.from },
       { "To", email.to |> normalize_addresses |> Enum.join(",") },
       { "Subject", email.subject },
       { "Cc",  email.cc |> as_list |> normalize_addresses |> Enum.join(", ") |> as_list },
       { "Bcc", email.bcc |> as_list |> normalize_addresses |> Enum.join(", ") |> as_list }
-      ] |> Enum.filter fn(i) -> elem(i, 1) != [] end
+    ] |> Enum.filter fn(i) -> elem(i, 1) != [] end
   end
 
   def as_list(value) when is_list(value) do
@@ -111,7 +111,7 @@ defmodule Mailman.Render do
         true -> address
         false ->
           name = address |>
-            String.split("@") |> 
+            String.split("@") |>
             List.first |>
             String.split(~r/([^\w\s]|_)/) |>
             Enum.map(&String.capitalize/1) |>
@@ -122,8 +122,8 @@ defmodule Mailman.Render do
   end
 
   def compile_parts(email, composer) do
-    [ 
-      { :html,  compile_part(:html, email, composer) }, 
+    [
+      { :html,  compile_part(:html, email, composer) },
       { :plain, compile_part(:text, email, composer) },
       Enum.map(email.attachments, fn(attachment) ->
         { :attachment, compile_part(:attachment, attachment, composer), attachment }

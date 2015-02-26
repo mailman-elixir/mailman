@@ -2,7 +2,7 @@ defmodule MailmanTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    pid = Mailman.LocalServer.start(1234)
+    pid = Mailman.TestServer.start
     :ok
   end
 
@@ -13,7 +13,7 @@ defmodule MailmanTest do
 
     def config do
       %Mailman.Context{
-          config:   %Mailman.LocalSmtpConfig{ port: 1234 },
+          config:   %Mailman.TestConfig{},
           composer: %Mailman.EexComposeConfig{}
         }
     end
@@ -63,7 +63,7 @@ Pictures!
 
   test "sending testing emails works" do
     { :ok, message } = Task.await MyApp.Mailer.deliver(testing_email)
-    { :ok, parsed  } = Mailman.Email.parse message
+    { :ok, _  } = Mailman.Email.parse message
   end
 
   test "#deliver returns Task" do
@@ -80,6 +80,16 @@ Pictures!
     assert email.bcc   == Mailman.Render.normalize_addresses(email_with_attachments.bcc)
     assert email.text   == email_with_attachments.text
     assert_same_attachments email, email_with_attachments
+  end
+
+  test "the message sent queue contains the latest sent messages" do
+    Mailman.TestServer.clear_deliveries
+    { :ok, _ } = Task.await MyApp.Mailer.deliver(email_with_attachments)
+    assert (Mailman.TestServer.deliveries |> Enum.count) == 1
+    { :ok, _ } = Task.await MyApp.Mailer.deliver(testing_email)
+    assert (Mailman.TestServer.deliveries |> Enum.count) == 2
+    Mailman.TestServer.clear_deliveries
+    assert (Mailman.TestServer.deliveries |> Enum.count) == 0
   end
 
   def assert_same_attachments(email1, email2) do

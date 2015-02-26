@@ -81,7 +81,7 @@ defmodule Mailman.LocalServer do
   end
 
   def start(port) do
-    :gen_smtp_server.start __MODULE__, 
+    :gen_smtp_server.start __MODULE__,
       [[], [{:allow_bare_newlines, :true}, {:port, port}]]
   end
 end
