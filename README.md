@@ -19,6 +19,9 @@ To be able to send emails, you only need to provide the SMTP config (like an ext
         }
     end
   end
+  
+  # somewhere where you start other services in your app:
+  Mailman.LocalServer.start 1234 # just pass the port number you want
 
   # somewhere else:
   def testing_email do
@@ -45,8 +48,8 @@ To be able to send emails, you only need to provide the SMTP config (like an ext
 
 And then to actually send an email:
 ```elixir
-# Note that for now deliver/1 is blocking. In the future it will return a Task
-MyApp.Mailer.deliver testing_email
+  # Note that for now deliver/1 is blocking. In the future it will return a Task
+  MyApp.Mailer.deliver testing_email
 ```
 
 ### Configuring the mailing context
@@ -70,6 +73,14 @@ You don't access those adaptes directly. Instead, you specify a config of your c
     config:   %Mailman.LocalSmtpConfig{ port: 1234 },
     composer: %Mailman.EexComposeConfig{}
   }
+```
+
+Note that to be able to use the local and the test configs, you'll need to start either local SMTP server or the testing service:
+
+```elixir
+  Mailman.LocalServer.start(1234)
+  # or:
+  Mailman.TestServer.start
 ```
 
 In this example we're setting up the library to use the local SMTP server created along with the app. In order for this to work you still have to create this process:
@@ -120,9 +131,24 @@ email = Mailman.Email.parse! message
 
 At this point, if the source contains the 'Date' header (meaning that it was put through a mailing system) — it will have the 'delivery' field non-empty.
 
+### Inspecing deliveries when testing
+
+When you use the TestServer you can take a look at the deliveries whith:
+
+```elixir
+  Mailman.TestServer.deliveries
+```
+
+Also, if you want to clear this list:
+
+```elixir
+  Mailman.TestServer.clear_deliveries
+```
+
 ## TODOs
 
 [√] A SMTP config that would use internal server/process coming with :gen_smtp
+[√] A testing config that stores deliveries
 [√] Ability to send attachments
 [√] Ability to provide CC and BCC
-[ ] Unit testing
+[] Unit testing (somewhat in progress)
