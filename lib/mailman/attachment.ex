@@ -1,4 +1,6 @@
 defmodule Mailman.Attachment do
+  @moduledoc "A struct defining an attachable file. It automatically detect the mime type based on file extension."
+
   defstruct file_path: "",
     mime_type: "",
     mime_sub_type: "",
@@ -655,10 +657,11 @@ defmodule Mailman.Attachment do
     ]
 
 
+  @doc "Get the attachment struct for given by path file from the file system"
   def inline(file_path) do
     case Path.join(".", file_path) |> Path.expand |> File.read do
       { :ok, data } ->
-        { 
+        {
           :ok,
           %Mailman.Attachment{
             file_path: file_path |> Path.basename,
@@ -671,6 +674,7 @@ defmodule Mailman.Attachment do
     end
   end
 
+  @doc "Get the attachment struct for given by path file from the file system and throw an error if anything goes wrong."
   def inline!(file_path) do
     case inline(file_path) do
       { :ok, attachment } -> attachment

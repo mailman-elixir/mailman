@@ -1,4 +1,6 @@
 defmodule Mailman.Header do
+  @moduledoc "Represents a Mime-Mail header"
+
   defstruct name: "",
     value: ""
 
@@ -14,5 +16,5 @@ defmodule Mailman.Header do
       'To' -> String.split(value, ",")
       _    -> value
     end
-  end 
+  end
 end

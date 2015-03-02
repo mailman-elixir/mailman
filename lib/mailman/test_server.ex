@@ -1,4 +1,6 @@
 defmodule Mailman.TestServer do
+  @moduledoc "Implementation of the testing SMTP server"
+
   use GenServer
   require Logger
 
@@ -34,7 +36,7 @@ defmodule Mailman.TestServer do
     {:reply, state, state}
   end
 
-  def handle_call(:clear_deliveries, _, state) do
+  def handle_call(:clear_deliveries, _, _state) do
     {:reply, :ok, []}
   end
 

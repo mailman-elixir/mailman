@@ -1,4 +1,5 @@
 defmodule Mailman.LocalSmtpAdapter do
+  @moduledoc "Adapter for using locally spawned SMTP server"
 
   @doc "Delivers an email through a locally running process"
   def deliver(config, email, message) do

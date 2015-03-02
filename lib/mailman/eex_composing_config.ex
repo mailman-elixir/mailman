@@ -1,4 +1,6 @@
 defmodule Mailman.EexComposeConfig do
+  @moduledoc "Defines the config for the Eex composer"
+
   defstruct root_path: "", assets_path: ""
 end
 

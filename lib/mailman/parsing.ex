@@ -1,4 +1,5 @@
 defmodule Mailman.Parsing do
+  @moduledoc "Functions for parsin mail messages into Elixir structs"
 
   def parse(message) when is_binary(message) do
     { :ok, parse(:mimemail.decode(message)) }

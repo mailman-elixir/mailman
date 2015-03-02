@@ -1,4 +1,5 @@
 defmodule Mailman.Render do
+  @moduledoc "Functions for rendering email messages into strings"
 
   @doc "Returns a tuple with all data needed for the underlying adapter to send"
   def render(email, composer) do
@@ -7,7 +8,7 @@ defmodule Mailman.Render do
       :mimemail.encode
   end
 
-  def to_tuple(part, email) when is_tuple(part) do
+  def to_tuple(part, _email) when is_tuple(part) do
     {
       mime_type_for(part),
       mime_subtype_for(part),
@@ -27,7 +28,7 @@ defmodule Mailman.Render do
     }
   end
 
-  def parameters_for({:attachment, body, attachment}) do
+  def parameters_for({:attachment, _body, attachment}) do
     [
       content_type_params_for(attachment),
       disposition_for(attachment),
@@ -35,19 +36,7 @@ defmodule Mailman.Render do
     ]
   end
 
-  def content_type_params_for(attachment) do
-    { "content-type-params", [ { "Content-Transfer-Encoding", "base64" } ] }
-  end
-
-  def disposition_for(attachment) do
-    { "disposition", "attachment" }
-  end
-
-  def disposition_params_for(attachment) do
-    { "disposition-params", [{ "filename", attachment.file_path }] }
-  end
-
-  def parameters_for(part) do
+  def parameters_for(_part) do
     [
       { "content-type-params", [ { "Content-Transfer-Encoding", "quoted-printable" } ] },
       { "disposition", "inline" },
@@ -55,11 +44,23 @@ defmodule Mailman.Render do
     ]
   end
 
+  def content_type_params_for(_attachment) do
+    { "content-type-params", [ { "Content-Transfer-Encoding", "base64" } ] }
+  end
+
+  def disposition_for(_attachment) do
+    { "disposition", "attachment" }
+  end
+
+  def disposition_params_for(attachment) do
+    { "disposition-params", [{ "filename", attachment.file_path }] }
+  end
+
   def mime_type_for(parts) when is_list(parts) do
     "multipart"
   end
 
-  def mime_type_for({type, _}) do
+  def mime_type_for({_type, _}) do
     "text"
   end
 

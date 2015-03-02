@@ -1,5 +1,7 @@
 defmodule Mailman.EexComposer do
-  def compile_text_part(config, mode, email) when mode in [:html, :text] do
+  @moduledoc "Provides functions for rendering from Eex template files"
+
+  def compile_text_part(_config, mode, email) when mode in [:html, :text] do
     template = email.text
     case email.data do
       %{} -> template
@@ -7,7 +9,7 @@ defmodule Mailman.EexComposer do
     end
   end
 
-  def compile_part(config, :attachment, attachment) do
+  def compile_part(_config, :attachment, attachment) do
     attachment.data
   end
 

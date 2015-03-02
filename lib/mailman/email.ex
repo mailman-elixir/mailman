@@ -1,9 +1,11 @@
 defmodule Mailman.Email do
-  defstruct subject: "", 
-    from: "", 
-    to: [], 
-    cc: [], 
-    bcc: [], 
+  @moduledoc "Struct representing an email message"
+
+  defstruct subject: "",
+    from: "",
+    to: [],
+    cc: [],
+    bcc: [],
     attachments: [],
     data: %{},
     html: "",

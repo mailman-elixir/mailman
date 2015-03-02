@@ -1,6 +1,7 @@
 defmodule Mailman.TestConfig do
-  defstruct raise_errors: false
+  @moduledoc "Config struct for the testing adapter"
 
+  defstruct store_deliveries: true
 end
 
 defimpl Mailman.Adapter, for: Mailman.TestConfig do

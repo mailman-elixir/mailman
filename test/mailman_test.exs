@@ -2,7 +2,7 @@ defmodule MailmanTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    pid = Mailman.TestServer.start
+    Mailman.TestServer.start
     :ok
   end
 

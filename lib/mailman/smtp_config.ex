@@ -1,4 +1,6 @@
 defmodule Mailman.SmtpConfig do
+  @moduledoc "A config struct for external SMTP server adapter"
+
   defstruct relay: "",
     username: "",
     password: "",
