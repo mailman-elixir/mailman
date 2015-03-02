@@ -151,4 +151,4 @@ Also, if you want to clear this list:
 - [x] A testing config that stores deliveries
 - [x] Ability to send attachments
 - [x] Ability to provide CC and BCC
-- [] Unit testing (somewhat in progress)
+- [ ] Unit testing (somewhat in progress)
