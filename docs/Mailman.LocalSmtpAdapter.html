@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mailman.ExternalSmtpAdapter</title>
+    <title>Mailman.LocalSmtpAdapter</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 
@@ -20,10 +20,10 @@
     </script>
 
     <div id="content">
-      <div class="breadcrumbs">Mailman v0.0.3 &rarr; <a href="overview.html">Overview</a> &rarr; <a href="Mailman.html">Mailman</a> &rarr; <a href="Mailman.ExternalSmtpAdapter.html">ExternalSmtpAdapter</a></div>
+      <div class="breadcrumbs">Mailman v0.0.3 &rarr; <a href="overview.html">Overview</a> &rarr; <a href="Mailman.html">Mailman</a> &rarr; <a href="Mailman.LocalSmtpAdapter.html">LocalSmtpAdapter</a></div>
 
       <h1>
-        Mailman.ExternalSmtpAdapter
+        Mailman.LocalSmtpAdapter
         
       </h1>
 
@@ -41,13 +41,13 @@
 
       
         <div id="moduledoc" class="docstring">
-          <p>Adapter for sending email via external SMTP server</p>
+          <p>Adapter for using locally spawned SMTP server</p>
 
         </div>
       
 
       
-        <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/external_smtp_adapter.ex#L1" class="view_source">Source</a>
+        <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_smtp_adapter.ex#L1" class="view_source">Source</a>
       
 
       
@@ -56,8 +56,12 @@
           <tr>
   <td class="summary_signature"><a href="#deliver/3">deliver(config, email, message)</a></td>
   
-    <td class="summary_synopsis"><p>Delivers an email based on specified config</p>
+    <td class="summary_synopsis"><p>Delivers an email through a locally running process</p>
 </td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#external_for/1">external_for(config)</a></td>
   
 </tr>
 
@@ -79,10 +83,25 @@
     </div>
   </div>
   
-  <div class="docstring"><p>Delivers an email based on specified config</p>
+  <div class="docstring"><p>Delivers an email through a locally running process</p>
 </div>
   
-    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/external_smtp_adapter.ex#L5" class="view_source">Source</a>
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_smtp_adapter.ex#L5" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="external_for/1">
+    <span class="signature"><strong>external_for(config)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#external_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"></div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_smtp_adapter.ex#L10" class="view_source">Source</a>
   
 </div>
 

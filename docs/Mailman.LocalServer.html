@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mailman.LocalServer</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+    <script type="text/javascript" charset="utf-8">
+      relpath = '';
+      if (relpath != '') relpath += '/';
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+  </head>
+
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+
+    <div id="content">
+      <div class="breadcrumbs">Mailman v0.0.3 &rarr; <a href="overview.html">Overview</a> &rarr; <a href="Mailman.html">Mailman</a> &rarr; <a href="Mailman.LocalServer.html">LocalServer</a></div>
+
+      <h1>
+        Mailman.LocalServer
+        
+      </h1>
+
+      <ul class="summary_links">
+        
+          <li><a href="#summary">Summary</a></li>
+        
+        
+          <li><a href="#functions_details">Functions</a></li>
+        
+        
+        
+        
+      </ul>
+
+      
+        <div id="moduledoc" class="docstring">
+          <p>Basic SMTP implementation via the gen_smtp_sever_session behavior. Implements relay’ing to external servers.</p>
+
+        </div>
+      
+
+      
+        <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L1" class="view_source">Source</a>
+      
+
+      
+        <h2 id="summary">Summary<div class="detail_header_links"><a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a></div></h2>
+        <table class="summary">
+          <tr>
+  <td class="summary_signature"><a href="#code_change/3">code_change(old, state, extra)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.code_change/3</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_AUTH/4">handle_AUTH(type, username, password, state)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_DATA/4">handle_DATA(from, to, data, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_DATA/4</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_EHLO/3">handle_EHLO(hostname, extensions, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_EHLO/3</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_HELO/2">handle_HELO(hostname, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_HELO/2</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_MAIL/2">handle_MAIL(from, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_MAIL/2</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_MAIL_extension/2">handle_MAIL_extension(extension, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_MAIL_extension/2</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_RCPT/2">handle_RCPT(to, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_RCPT/2</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_RCPT_extension/2">handle_RCPT_extension(to, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_RCPT_extension/2</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_RSET/1">handle_RSET(state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_RSET/1</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_STARTTLS/1">handle_STARTTLS(state)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_VRFY/2">handle_VRFY(address, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_VRFY/2</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#handle_other/3">handle_other(verb, args, state)</a></td>
+  
+    <td class="summary_synopsis"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_other/3</code></p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#init/4">init(hostname, session_count, address, options)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#relay/3">relay(from, list2, data)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#start/1">start(port)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#terminate/2">terminate(reason, state)</a></td>
+  
+</tr>
+
+        </table>
+      
+
+      
+
+      
+        <div id="functions_details" class="details_list">
+          <h2>Functions</h2>
+          <div class="detail">
+  <div class="detail_header" id="code_change/3">
+    <span class="signature"><strong>code_change(old, state, extra)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#code_change/3" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.code_change/3</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L59" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_AUTH/4">
+    <span class="signature"><strong>handle_AUTH(type, username, password, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_AUTH/4" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"></div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L51" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_DATA/4">
+    <span class="signature"><strong>handle_DATA(from, to, data, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_DATA/4" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_DATA/4</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L34" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_EHLO/3">
+    <span class="signature"><strong>handle_EHLO(hostname, extensions, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_EHLO/3" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_EHLO/3</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L14" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_HELO/2">
+    <span class="signature"><strong>handle_HELO(hostname, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_HELO/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_HELO/2</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L10" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_MAIL/2">
+    <span class="signature"><strong>handle_MAIL(from, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_MAIL/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_MAIL/2</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L18" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_MAIL_extension/2">
+    <span class="signature"><strong>handle_MAIL_extension(extension, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_MAIL_extension/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_MAIL_extension/2</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L22" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_RCPT/2">
+    <span class="signature"><strong>handle_RCPT(to, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_RCPT/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_RCPT/2</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L26" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_RCPT_extension/2">
+    <span class="signature"><strong>handle_RCPT_extension(to, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_RCPT_extension/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_RCPT_extension/2</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L30" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_RSET/1">
+    <span class="signature"><strong>handle_RSET(state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_RSET/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_RSET/1</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L39" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_STARTTLS/1">
+    <span class="signature"><strong>handle_STARTTLS(state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_STARTTLS/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"></div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L55" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_VRFY/2">
+    <span class="signature"><strong>handle_VRFY(address, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_VRFY/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_VRFY/2</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L43" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="handle_other/3">
+    <span class="signature"><strong>handle_other(verb, args, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#handle_other/3" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"><p>Callback implementation of <code class="inline">:gen_smtp_server_session.handle_other/3</code>.</p>
+</div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L47" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="init/4">
+    <span class="signature"><strong>init(hostname, session_count, address, options)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#init/4" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"></div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L5" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="relay/3">
+    <span class="signature"><strong>relay(from, list2, data)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#relay/3" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"></div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L67" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="start/1">
+    <span class="signature"><strong>start(port)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#start/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"></div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L77" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="terminate/2">
+    <span class="signature"><strong>terminate(reason, state)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#terminate/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"></div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/local_server.ex#L63" class="view_source">Source</a>
+  
+</div>
+
+        </div>
+      
+
+      
+
+      
+    </div>
+  </body>
+</html>

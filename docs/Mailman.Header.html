@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mailman.ExternalSmtpAdapter</title>
+    <title>Mailman.Header</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 
@@ -20,10 +20,10 @@
     </script>
 
     <div id="content">
-      <div class="breadcrumbs">Mailman v0.0.3 &rarr; <a href="overview.html">Overview</a> &rarr; <a href="Mailman.html">Mailman</a> &rarr; <a href="Mailman.ExternalSmtpAdapter.html">ExternalSmtpAdapter</a></div>
+      <div class="breadcrumbs">Mailman v0.0.3 &rarr; <a href="overview.html">Overview</a> &rarr; <a href="Mailman.html">Mailman</a> &rarr; <a href="Mailman.Header.html">Header</a></div>
 
       <h1>
-        Mailman.ExternalSmtpAdapter
+        Mailman.Header
         
       </h1>
 
@@ -41,23 +41,24 @@
 
       
         <div id="moduledoc" class="docstring">
-          <p>Adapter for sending email via external SMTP server</p>
+          <p>Represents a Mime-Mail header</p>
 
         </div>
       
 
       
-        <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/external_smtp_adapter.ex#L1" class="view_source">Source</a>
+        <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/header.ex#L1" class="view_source">Source</a>
       
 
       
         <h2 id="summary">Summary<div class="detail_header_links"><a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a></div></h2>
         <table class="summary">
           <tr>
-  <td class="summary_signature"><a href="#deliver/3">deliver(config, email, message)</a></td>
+  <td class="summary_signature"><a href="#from_raw/1">from_raw(raw)</a></td>
   
-    <td class="summary_synopsis"><p>Delivers an email based on specified config</p>
-</td>
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#process_value/2">process_value(name, value)</a></td>
   
 </tr>
 
@@ -70,19 +71,33 @@
         <div id="functions_details" class="details_list">
           <h2>Functions</h2>
           <div class="detail">
-  <div class="detail_header" id="deliver/3">
-    <span class="signature"><strong>deliver(config, email, message)</strong></span>
+  <div class="detail_header" id="from_raw/1">
+    <span class="signature"><strong>from_raw(raw)</strong></span>
     <div class="detail_header_links">
       <span class="detail_type">(function)</span>
-      <a href="#deliver/3" class="detail_link" title="Link to this function">#</a>
+      <a href="#from_raw/1" class="detail_link" title="Link to this function">#</a>
       <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
     </div>
   </div>
   
-  <div class="docstring"><p>Delivers an email based on specified config</p>
-</div>
+  <div class="docstring"></div>
   
-    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/external_smtp_adapter.ex#L5" class="view_source">Source</a>
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/header.ex#L7" class="view_source">Source</a>
+  
+</div>
+<div class="detail">
+  <div class="detail_header" id="process_value/2">
+    <span class="signature"><strong>process_value(name, value)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#process_value/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <div class="docstring"></div>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/header.ex#L14" class="view_source">Source</a>
   
 </div>
 

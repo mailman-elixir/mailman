@@ -6,7 +6,11 @@ defmodule Mailman.Mixfile do
       name: "Mailman",
       source_url: "https://github.com/kamilc/mailman",
       homepage_url: "https://github.com/kamilc/mailman",
-      version: "0.0.3",
+      description: "Library providing a clean way of defining mailers in Elixir apps",
+      files: ["lib", "docs", "LICENSE", "README"],
+      contributors: ["Kamil Ciemniewski <ciemniewski.kamil@gmail.com>"],
+      licenses: ["MIT"],
+      version: "0.1.0",
       elixir: "~> 1.0.0",
       deps: deps ]
   end
@@ -21,8 +25,9 @@ defmodule Mailman.Mixfile do
   defp deps do
     [
       { :eiconv, github: "zotonic/eiconv" },
-      { :gen_smtp, ~r/0\.9/, git: "https://github.com/Vagabond/gen_smtp.git" },
-      { :ex_doc, github: "elixir-lang/ex_doc" }
+      { :gen_smtp, ~r/0\.9/ },
+      { :ex_doc },
+      { :earmark, ">= 0.0.0" }
     ]
   end
 end

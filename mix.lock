@@ -1,5 +1,6 @@
 %{"amrita": {:git, "git://github.com/josephwilk/amrita.git", "7570eb766fa0506e4c08d241f5359dff9135f961", []},
   "apprentice": {:git, "git://github.com/ElixirCasts/apprentice.git", "b9306b8316385c63d1e18492623a5cd3dc33df16", []},
+  "earmark": {:hex, :earmark, "0.1.13"},
   "eiconv": {:git, "git://github.com/zotonic/eiconv.git", "644fb5e7bd6640fbd073f4d28957914ea979aea0", []},
   "ex_doc": {:git, "git://github.com/elixir-lang/ex_doc.git", "ce0fa1202f93642fdf84531257194eb73538d188", []},
   "gen_smtp": {:git, "https://github.com/Vagabond/gen_smtp.git", "8f7ba01172e679e8b4262334cefc3451b4c36777", []},
