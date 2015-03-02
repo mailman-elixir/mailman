@@ -147,8 +147,8 @@ Also, if you want to clear this list:
 
 ## TODOs
 
-[√] A SMTP config that would use internal server/process coming with :gen_smtp
-[√] A testing config that stores deliveries
-[√] Ability to send attachments
-[√] Ability to provide CC and BCC
-[] Unit testing (somewhat in progress)
+- [x] A SMTP config that would use internal server/process coming with :gen_smtp
+- [x] A testing config that stores deliveries
+- [x] Ability to send attachments
+- [x] Ability to provide CC and BCC
+- [] Unit testing (somewhat in progress)
