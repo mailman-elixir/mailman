@@ -62,11 +62,11 @@ There are two parts in the configuration data for how Mailman works:
 The first one specifies how emails will be rendered. The second one, how
 will they be delivered. 
 
-For now, only the %Mailman.EexComposeConfig{} is available for configuring the composer. The library is ready to support any other composer you migt want to implement.
+For now, only the `%Mailman.EexComposeConfig{}` is available for configuring the composer. The library is ready to support any other composer you might want to implement.
 
 There are three adapter configs at the moment: external smtp, local smtp and the testing one. The latter will soon support handling the queue of emails to ease testing of the email sending part of your apps. 
 
-You don't access those adaptes directly. Instead, you specify a config of your choice and the library does all the rest for you. The three config options corresponding with adapters are: %Mailman.LocalSmtpConfig{}, %Mailman.SmtpConfig{} and %Mailman.TestConfig{}.
+You don't access those adapters directly. Instead, you specify a config of your choice and the library does all the rest for you. The three config options corresponding with adapters are: `%Mailman.LocalSmtpConfig{}`, `%Mailman.SmtpConfig{}` and `%Mailman.TestConfig{}`.
 
 ```elixir
 %Mailman.Context{
@@ -116,11 +116,11 @@ attachments: [
   ],
 ```
 
-This reads the file from disk, encodes it with base64 and discoveres the proper mime-type. Attachments are also properly decoded from existing emails (More on that below).
+This reads the file from disk, encodes it with base64 and discovers the proper mime-type. Attachments are also properly decoded from existing emails (more on that below).
 
 ### Parsing delivered emails
 
-If you have the source of rendered email as a binary, you can use the Mailman.Email.parse!/1 function to turn it into %Mailman.Email{}.
+If you have the source of rendered email as a binary, you can use the `Mailman.Email.parse!/1` function to turn it into`%Mailman.Email{}`.
 
 Here's an example from the test suite:
 
