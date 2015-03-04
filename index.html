@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Mailman : Mailman provides a clean way of defining mailers in your Elixir applications">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Mailman</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/kamilc/mailman">View on GitHub</a>
+
+          <h1 id="project_title">Mailman</h1>
+          <h2 id="project_tagline">Mailman provides a clean way of defining mailers in your Elixir applications</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/kamilc/mailman/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/kamilc/mailman/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a id="mailman" class="anchor" href="#mailman" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mailman</h2>
+
+<p>Mailman provides a clean way of defining mailers in your Elixir apps. It allows you to send multi-part email messages containing text and html parts. It encodes messages with a proper quoted-printable encoding. It also allows you to send attachments.</p>
+
+<p>To be able to send emails, you only need to provide the SMTP config (like an external SMTP server along with credentials etc.). You also need to define your emails along with text and/or html templates. Mailman uses Eex as a templating language but will likely be extended to provide other choices as well in the future.</p>
+
+<h3>
+<a id="a-quick-example" class="anchor" href="#a-quick-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>A quick example</h3>
+
+<div class="highlight highlight-elixir"><pre>  <span class="pl-k">defmodule</span> <span class="pl-en">MyApp.Mailer</span> <span class="pl-k">do</span>
+<span class="pl-s2">    <span class="pl-k">def</span> <span class="pl-s2">deliver(email)</span> <span class="pl-k">do</span></span>
+      <span class="pl-vo">Mailman</span>.deliver(email, config)
+    <span class="pl-k">end</span>
+
+<span class="pl-s2">    <span class="pl-k">def</span> <span class="pl-s2">config</span> <span class="pl-k">do</span></span>
+      %<span class="pl-vo">Mailman</span>.<span class="pl-vo">Context</span>{
+          <span class="pl-c1">config:</span>   %<span class="pl-vo">Mailman</span>.<span class="pl-vo">LocalSmtpConfig</span>{ <span class="pl-c1">port:</span> <span class="pl-c1">1234</span> },
+          <span class="pl-c1">composer:</span> %<span class="pl-vo">Mailman</span>.<span class="pl-vo">EexComposeConfig</span>{}
+        }
+    <span class="pl-k">end</span>
+  <span class="pl-k">end</span>
+
+<span class="pl-c">  # somewhere where you start other services in your app:</span>
+  <span class="pl-vo">Mailman</span>.<span class="pl-vo">LocalServer</span>.start <span class="pl-c1">1234</span> <span class="pl-c"># just pass the port number you want</span>
+
+<span class="pl-c">  # somewhere else:</span>
+<span class="pl-s2">  <span class="pl-k">def</span> <span class="pl-s2">testing_email</span> <span class="pl-k">do</span></span>
+    %<span class="pl-vo">Mailman</span>.<span class="pl-vo">Email</span>{
+      <span class="pl-c1">subject:</span> <span class="pl-s1"><span class="pl-pds">"</span>Hello Mailman!<span class="pl-pds">"</span></span>,
+      <span class="pl-c1">from:</span> <span class="pl-s1"><span class="pl-pds">"</span>mailman@elixir.com<span class="pl-pds">"</span></span>,
+      <span class="pl-c1">to:</span> [ <span class="pl-s1"><span class="pl-pds">"</span>testy@tester123456.com<span class="pl-pds">"</span></span> ],
+      <span class="pl-c1">cc:</span> [ <span class="pl-s1"><span class="pl-pds">"</span>testy2#tester1234.com<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>abcd@defd.com<span class="pl-pds">"</span></span> ],
+      <span class="pl-c1">bcc:</span> [ <span class="pl-s1"><span class="pl-pds">"</span>1234@wsd.com<span class="pl-pds">"</span></span> ],
+      <span class="pl-c1">data:</span> [
+        <span class="pl-c1">name:</span> <span class="pl-s1"><span class="pl-pds">"</span>Yo<span class="pl-pds">"</span></span>
+        ],
+      <span class="pl-c1">text:</span> <span class="pl-s1"><span class="pl-pds">"</span>Hello! &lt;%= name %&gt; These are Unicode: qżźół<span class="pl-pds">"</span></span>,
+      <span class="pl-c1">html:</span> <span class="pl-s1"><span class="pl-pds">"""</span></span>
+<span class="pl-s1">&lt;html&gt;</span>
+<span class="pl-s1">&lt;body&gt;</span>
+<span class="pl-s1"> &lt;b&gt;Hello! &lt;%= name %&gt;&lt;/b&gt; These are Unicode: qżźół</span>
+<span class="pl-s1">&lt;/body&gt;</span>
+<span class="pl-s1">&lt;/html&gt;</span>
+<span class="pl-s1"><span class="pl-pds">      """</span></span>
+      }
+  <span class="pl-k">end</span></pre></div>
+
+<p>And then to actually send an email:</p>
+
+<div class="highlight highlight-elixir"><pre><span class="pl-c">  # Note that for now deliver/1 is blocking. In the future it will return a Task</span>
+  <span class="pl-vo">MyApp</span>.<span class="pl-vo">Mailer</span>.deliver testing_email</pre></div>
+
+<h3>
+<a id="configuring-the-mailing-context" class="anchor" href="#configuring-the-mailing-context" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuring the mailing context</h3>
+
+<p>There are two parts in the configuration data for how Mailman works:</p>
+
+<ul>
+<li>Composer config</li>
+<li>Adapter config</li>
+</ul>
+
+<p>The first one specifies how emails will be rendered. The second one, how
+will they be delivered. </p>
+
+<p>For now, only the <code>%Mailman.EexComposeConfig{}</code> is available for configuring the composer. The library is ready to support any other composer you might want to implement.</p>
+
+<p>There are three adapter configs at the moment: external smtp, local smtp and the testing one. The latter will soon support handling the queue of emails to ease testing of the email sending part of your apps. </p>
+
+<p>You don't access those adapters directly. Instead, you specify a config of your choice and the library does all the rest for you. The three config options corresponding with adapters are: <code>%Mailman.LocalSmtpConfig{}</code>, <code>%Mailman.SmtpConfig{}</code> and <code>%Mailman.TestConfig{}</code>.</p>
+
+<div class="highlight highlight-elixir"><pre>%<span class="pl-vo">Mailman</span>.<span class="pl-vo">Context</span>{
+    <span class="pl-c1">config:</span>   %<span class="pl-vo">Mailman</span>.<span class="pl-vo">LocalSmtpConfig</span>{ <span class="pl-c1">port:</span> <span class="pl-c1">1234</span> },
+    <span class="pl-c1">composer:</span> %<span class="pl-vo">Mailman</span>.<span class="pl-vo">EexComposeConfig</span>{}
+  }</pre></div>
+
+<p>Note that to be able to use the local and the test configs, you'll need to start either local SMTP server or the testing service:</p>
+
+<div class="highlight highlight-elixir"><pre>  <span class="pl-vo">Mailman</span>.<span class="pl-vo">LocalServer</span>.start(<span class="pl-c1">1234</span>)
+<span class="pl-c">  # or:</span>
+  <span class="pl-vo">Mailman</span>.<span class="pl-vo">TestServer</span>.start</pre></div>
+
+<p>In this example we're setting up the library to use the local SMTP server created along with the app. In order for this to work you still have to create this process:</p>
+
+<div class="highlight highlight-elixir"><pre>pid <span class="pl-k">=</span> <span class="pl-vo">Mailman</span>.<span class="pl-vo">LocalServer</span>.start(<span class="pl-c1">1234</span>)</pre></div>
+
+<h3>
+<a id="defining-emails" class="anchor" href="#defining-emails" aria-hidden="true"><span class="octicon octicon-link"></span></a>Defining emails</h3>
+
+<p>The email struct is defined as:</p>
+
+<div class="highlight highlight-elixir"><pre><span class="pl-k">defstruct</span> <span class="pl-c1">subject:</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, 
+  <span class="pl-c1">from:</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, 
+  <span class="pl-c1">to:</span> [], 
+  <span class="pl-c1">cc:</span> [], 
+  <span class="pl-c1">bcc:</span> [], 
+  <span class="pl-c1">attachments:</span> [], <span class="pl-c"># This has to be %Mailman.Attachment{}. More about attachments below</span>
+  <span class="pl-c1">data:</span> %{}, <span class="pl-c"># This is the context for EEx. You put here data for your &lt;%= %&gt; placeholders</span>
+  <span class="pl-c1">html:</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-c"># Actual html template</span>
+  <span class="pl-c1">text:</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-c"># Actual plain template</span>
+  <span class="pl-c1">delivery:</span> <span class="pl-c1">nil</span> <span class="pl-c"># If the message was created through parsing of the delivered email - this holds the 'Date' header</span></pre></div>
+
+<h3>
+<a id="attaching-files" class="anchor" href="#attaching-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Attaching files</h3>
+
+<p>A dedicated struct has been created for describing attachments. In this version, there's a function that takes a binary representing a path to a file that's constructing this struct for you. So you can add attachments to your email definitions like this:</p>
+
+<div class="highlight highlight-elixir"><pre><span class="pl-c1">attachments:</span> [
+  <span class="pl-vo">Mailman</span>.<span class="pl-vo">Attachment</span>.inline!(<span class="pl-s1"><span class="pl-pds">"</span>test/data/blank.png<span class="pl-pds">"</span></span>)
+  ],</pre></div>
+
+<p>This reads the file from disk, encodes it with base64 and discovers the proper mime-type. Attachments are also properly decoded from existing emails (more on that below).</p>
+
+<h3>
+<a id="parsing-delivered-emails" class="anchor" href="#parsing-delivered-emails" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parsing delivered emails</h3>
+
+<p>If you have the source of rendered email as a binary, you can use the <code>Mailman.Email.parse!/1</code> function to turn it into<code>%Mailman.Email{}</code>.</p>
+
+<p>Here's an example from the test suite:</p>
+
+<div class="highlight highlight-elixir"><pre>{<span class="pl-c1">:ok</span>, message} <span class="pl-k">=</span> <span class="pl-vo">Task</span>.await <span class="pl-vo">MyApp</span>.<span class="pl-vo">Mailer</span>.deliver(email_with_attachments)
+email <span class="pl-k">=</span> <span class="pl-vo">Mailman</span>.<span class="pl-vo">Email</span>.parse! message</pre></div>
+
+<p>At this point, if the source contains the 'Date' header (meaning that it was put through a mailing system) — it will have the 'delivery' field non-empty.</p>
+
+<h3>
+<a id="inspecting-deliveries-when-testing" class="anchor" href="#inspecting-deliveries-when-testing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Inspecting deliveries when testing</h3>
+
+<p>When you use the TestServer you can take a look at the deliveries whith:</p>
+
+<div class="highlight highlight-elixir"><pre>  <span class="pl-vo">Mailman</span>.<span class="pl-vo">TestServer</span>.deliveries</pre></div>
+
+<p>Also, if you want to clear this list:</p>
+
+<div class="highlight highlight-elixir"><pre>  <span class="pl-vo">Mailman</span>.<span class="pl-vo">TestServer</span>.clear_deliveries</pre></div>
+
+<h2>
+<a id="todos" class="anchor" href="#todos" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODOs</h2>
+
+<ul>
+<li>[x] A SMTP config that would use internal server/process coming with :gen_smtp</li>
+<li>[x] A testing config that stores deliveries</li>
+<li>[x] Ability to send attachments</li>
+<li>[x] Ability to provide CC and BCC</li>
+<li>[ ] Unit testing (somewhat in progress)</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Mailman maintained by <a href="https://github.com/kamilc">kamilc</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
