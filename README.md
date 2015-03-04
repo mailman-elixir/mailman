@@ -131,7 +131,7 @@ email = Mailman.Email.parse! message
 
 At this point, if the source contains the 'Date' header (meaning that it was put through a mailing system) — it will have the 'delivery' field non-empty.
 
-### Inspecing deliveries when testing
+### Inspecting deliveries when testing
 
 When you use the TestServer you can take a look at the deliveries whith:
 
