@@ -3,6 +3,7 @@ defmodule Mailman.Email do
 
   defstruct subject: "",
     from: "",
+    reply_to: "",
     to: [],
     cc: [],
     bcc: [],
