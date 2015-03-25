@@ -152,3 +152,8 @@ Also, if you want to clear this list:
 - [x] Ability to send attachments
 - [x] Ability to provide CC and BCC
 - [ ] Unit testing (somewhat in progress)
+
+## Contributors
+
+* Josh Adams ([https://github.com/knewter]())
+* Dan McClain ([https://github.com/danmcclain]())
