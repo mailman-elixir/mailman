@@ -79,6 +79,7 @@ Pictures!
     assert email.cc   == Mailman.Render.normalize_addresses(email_with_attachments.cc)
     assert email.bcc   == Mailman.Render.normalize_addresses(email_with_attachments.bcc)
     assert email.text   == email_with_attachments.text
+    assert email.html   == email_with_attachments.html
     assert_same_attachments email, email_with_attachments
   end
 
