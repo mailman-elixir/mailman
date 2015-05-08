@@ -125,8 +125,8 @@ defmodule Mailman.Render do
 
   def compile_parts(email, composer) do
     [
-      { :html,  compile_part(:html, email, composer) },
       { :plain, compile_part(:text, email, composer) },
+      { :html,  compile_part(:html, email, composer) },
       Enum.map(email.attachments, fn(attachment) ->
         { :attachment, compile_part(:attachment, attachment, composer), attachment }
       end)
