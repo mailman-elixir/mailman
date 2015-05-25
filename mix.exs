@@ -33,7 +33,11 @@ defmodule Mailman.Mixfile do
     [
       files: ["lib", "docs", "LICENSE", "README", "mix.exs"],
       contributors: ["Kamil Ciemniewski <ciemniewski.kamil@gmail.com>"],
-      licenses: ["MIT"]
+      licenses: ["MIT"],
+      links: %{
+         "GitHub" => "https://github.com/kamilc/mailman",
+         "Docs" => "http://hexdocs.pm/mailman"
+     }
     ]
   end
 end
