@@ -174,3 +174,4 @@ This way you'll be able to use the parse! function to parse delivered emails.
 
 * Josh Adams ([https://github.com/knewter]())
 * Dan McClain ([https://github.com/danmcclain]())
+* Holger Amann ([https://github.com/hamann]())
