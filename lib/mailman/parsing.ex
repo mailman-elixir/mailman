@@ -8,16 +8,16 @@ defmodule Mailman.Parsing do
   @doc "Parses given mime mail and returns Email"
   def parse(raw) do
     %Mailman.Email{
-      subject: get_header(raw, "Subject"),
-      from: get_header(raw, "From"),
-      to: get_header(raw, "To"),
-      reply_to: get_header(raw, "reply-to"),
-      cc: get_header(raw, "Cc"),
-      bcc: get_header(raw, "Bcc"),
+      subject: get_header(raw, "Subject") || "",
+      from: get_header(raw, "From") || "",
+      to: get_header(raw, "To") || "",
+      reply_to: get_header(raw, "reply-to") || "",
+      cc: get_header(raw, "Cc") || "",
+      bcc: get_header(raw, "Bcc") || "",
       attachments: get_attachments(raw),
-      html: get_html(raw),
-      text: get_text(raw),
-      delivery: get_delivery(raw)
+      html: get_html(raw) || "",
+      text: get_text(raw) || "",
+      delivery: get_delivery(raw) || ""
     }
   end
 
