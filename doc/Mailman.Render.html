@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mailman.Render</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="css/elixir.css" type="text/css" media="screen" charset="utf-8" />
+    <script type="text/javascript" charset="utf-8">
+      relpath = '';
+      if (relpath != '') relpath += '/';
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/highlight.pack.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      hljs.initHighlightingOnLoad();
+      hljs.configure({languages: []}); //disable autodetect
+    </script>
+  </head>
+
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+
+    <section id="content">
+      <div class="breadcrumbs">Mailman v0.1.1 &rarr; <a href="overview.html">Overview</a> &rarr; <a href="Mailman.html">Mailman</a> &rarr; <a href="Mailman.Render.html">Render</a></div>
+      <h1>
+        Mailman.Render
+        
+      </h1>
+
+      <ul class="summary_links">
+        
+          <li><a href="#summary">Summary</a></li>
+        
+        
+        
+          <li><a href="#functions_details">Functions</a></li>
+        
+        
+        
+      </ul>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Functions for rendering email messages into strings</p>
+
+        </section>
+      
+
+      
+        <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L1" class="view_source">Source</a>
+      
+
+      
+        <h2 id="summary">Summary<span class="detail_header_links"><a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a></span></h2>
+        <table class="summary">
+          <tr>
+  <td class="summary_signature"><a href="#as_list/1">as_list(value)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#compile_part/3">compile_part(type, email, composer)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#compile_parts/2">compile_parts(email, composer)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#content_type_params_for/1">content_type_params_for(attachment)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#disposition_for/1">disposition_for(attachment)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#disposition_params_for/1">disposition_params_for(attachment)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#headers_for/1">headers_for(email)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#mime_subtype_for/1">mime_subtype_for(parts)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#mime_type_for/1">mime_type_for(parts)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#normalize_addresses/1">normalize_addresses(addresses)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#not_empty_tuple_value/1">not_empty_tuple_value(tuple)</a></td>
+  
+    <td class="summary_synopsis"><p>Returns boolean saying if a value for a tuple is blank as a string or list</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#parameters_for/1">parameters_for(arg1)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#render/2">render(email, composer)</a></td>
+  
+    <td class="summary_synopsis"><p>Returns a tuple with all data needed for the underlying adapter to send</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#to_tuple/2">to_tuple(part, email)</a></td>
+  
+</tr>
+
+        </table>
+      
+
+      
+
+      
+        <section id="functions_details" class="details_list">
+          <h2>Functions</h2>
+          <section class="detail">
+  <div class="detail_header" id="as_list/1">
+    <span class="signature"><strong>as_list(value)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#as_list/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L98" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="compile_part/3">
+    <span class="signature"><strong>compile_part(type, email, composer)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#compile_part/3" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L137" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="compile_parts/2">
+    <span class="signature"><strong>compile_parts(email, composer)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#compile_parts/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L126" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="content_type_params_for/1">
+    <span class="signature"><strong>content_type_params_for(attachment)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#content_type_params_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L47" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="disposition_for/1">
+    <span class="signature"><strong>disposition_for(attachment)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#disposition_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L51" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="disposition_params_for/1">
+    <span class="signature"><strong>disposition_params_for(attachment)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#disposition_params_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L55" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="headers_for/1">
+    <span class="signature"><strong>headers_for(email)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#headers_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L87" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="mime_subtype_for/1">
+    <span class="signature"><strong>mime_subtype_for(parts)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#mime_subtype_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L71" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="mime_type_for/1">
+    <span class="signature"><strong>mime_type_for(parts)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#mime_type_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L59" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="normalize_addresses/1">
+    <span class="signature"><strong>normalize_addresses(addresses)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#normalize_addresses/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L110" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="not_empty_tuple_value/1">
+    <span class="signature"><strong>not_empty_tuple_value(tuple)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#not_empty_tuple_value/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>Returns boolean saying if a value for a tuple is blank as a string or list</p>
+
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L142" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="parameters_for/1">
+    <span class="signature"><strong>parameters_for(arg1)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#parameters_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L31" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="render/2">
+    <span class="signature"><strong>render(email, composer)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#render/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>Returns a tuple with all data needed for the underlying adapter to send</p>
+
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L5" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="to_tuple/2">
+    <span class="signature"><strong>to_tuple(part, email)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#to_tuple/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/render.ex#L11" class="view_source">Source</a>
+  
+</section>
+
+        </section>
+      
+
+      
+
+      
+    </section>
+  </body>
+</html>

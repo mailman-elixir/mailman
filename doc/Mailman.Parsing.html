@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mailman.Parsing</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="css/elixir.css" type="text/css" media="screen" charset="utf-8" />
+    <script type="text/javascript" charset="utf-8">
+      relpath = '';
+      if (relpath != '') relpath += '/';
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/highlight.pack.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      hljs.initHighlightingOnLoad();
+      hljs.configure({languages: []}); //disable autodetect
+    </script>
+  </head>
+
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+
+    <section id="content">
+      <div class="breadcrumbs">Mailman v0.1.1 &rarr; <a href="overview.html">Overview</a> &rarr; <a href="Mailman.html">Mailman</a> &rarr; <a href="Mailman.Parsing.html">Parsing</a></div>
+      <h1>
+        Mailman.Parsing
+        
+      </h1>
+
+      <ul class="summary_links">
+        
+          <li><a href="#summary">Summary</a></li>
+        
+        
+        
+          <li><a href="#functions_details">Functions</a></li>
+        
+        
+        
+      </ul>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Functions for parsin mail messages into Elixir structs</p>
+
+        </section>
+      
+
+      
+        <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L1" class="view_source">Source</a>
+      
+
+      
+        <h2 id="summary">Summary<span class="detail_header_links"><a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a></span></h2>
+        <table class="summary">
+          <tr>
+  <td class="summary_signature"><a href="#all_headers/1">all_headers(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#content_parts/1">content_parts(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#filename_from_raw/1">filename_from_raw(raw_part)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#get_attachments/1">get_attachments(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#get_delivery/1">get_delivery(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#get_header/2">get_header(raw, name)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#get_html/1">get_html(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#get_raw_body/1">get_raw_body(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#get_subtype/1">get_subtype(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#get_text/1">get_text(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#get_type/1">get_type(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#is_raw_attachement/1">is_raw_attachement(raw_part)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#is_raw_html_part/1">is_raw_html_part(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#is_raw_plain_part/1">is_raw_plain_part(raw)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#parse!/1">parse!(message_text)</a></td>
+  
+    <td class="summary_synopsis"><p>Parses the message and returns Email</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#parse/1">parse(message)</a></td>
+  
+    <td class="summary_synopsis"><p>Parses given mime mail and returns Email</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#raw_parameters_for/1">raw_parameters_for(raw_part)</a></td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#raw_to_attachement/1">raw_to_attachement(raw_part)</a></td>
+  
+</tr>
+
+        </table>
+      
+
+      
+
+      
+        <section id="functions_details" class="details_list">
+          <h2>Functions</h2>
+          <section class="detail">
+  <div class="detail_header" id="all_headers/1">
+    <span class="signature"><strong>all_headers(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#all_headers/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L51" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="content_parts/1">
+    <span class="signature"><strong>content_parts(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#content_parts/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L102" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="filename_from_raw/1">
+    <span class="signature"><strong>filename_from_raw(raw_part)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#filename_from_raw/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L55" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="get_attachments/1">
+    <span class="signature"><strong>get_attachments(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#get_attachments/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L88" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="get_delivery/1">
+    <span class="signature"><strong>get_delivery(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#get_delivery/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L136" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="get_header/2">
+    <span class="signature"><strong>get_header(raw, name)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#get_header/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L32" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="get_html/1">
+    <span class="signature"><strong>get_html(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#get_html/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L122" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="get_raw_body/1">
+    <span class="signature"><strong>get_raw_body(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#get_raw_body/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L118" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="get_subtype/1">
+    <span class="signature"><strong>get_subtype(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#get_subtype/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L114" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="get_text/1">
+    <span class="signature"><strong>get_text(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#get_text/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L129" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="get_type/1">
+    <span class="signature"><strong>get_type(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#get_type/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L110" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="is_raw_attachement/1">
+    <span class="signature"><strong>is_raw_attachement(raw_part)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#is_raw_attachement/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L73" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="is_raw_html_part/1">
+    <span class="signature"><strong>is_raw_html_part(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#is_raw_html_part/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L80" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="is_raw_plain_part/1">
+    <span class="signature"><strong>is_raw_plain_part(raw)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#is_raw_plain_part/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L84" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="parse/1">
+    <span class="signature"><strong>parse(message)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#parse/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>Parses given mime mail and returns Email</p>
+
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L4" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="parse!/1">
+    <span class="signature"><strong>parse!(message_text)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#parse!/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>Parses the message and returns Email</p>
+
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L25" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="raw_parameters_for/1">
+    <span class="signature"><strong>raw_parameters_for(raw_part)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#raw_parameters_for/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L69" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="raw_to_attachement/1">
+    <span class="signature"><strong>raw_to_attachement(raw_part)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#raw_to_attachement/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+  
+    <a href="https://github.com/kamilc/mailman/blob/master/lib/mailman/parsing.ex#L93" class="view_source">Source</a>
+  
+</section>
+
+        </section>
+      
+
+      
+
+      
+    </section>
+  </body>
+</html>
