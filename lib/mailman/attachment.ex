@@ -660,7 +660,7 @@ defmodule Mailman.Attachment do
 
   @doc "Get the attachment struct for given by path file from the file system"
   def inline(file_path) do
-    case Path.join(".", file_path) |> Path.expand |> File.read do
+    case file_path |> Path.expand |> File.read do
       { :ok, data } ->
         {
           :ok,
