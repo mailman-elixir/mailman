@@ -302,6 +302,7 @@ defmodule Mailman.Attachment do
     { ".moov", "video/quicktime" },
     { ".mov", "video/quicktime" },
     { ".movie", "video/x-sgi-movie" },
+    { ".mobileconfig", "application/x-apple-aspen-config" },
     { ".mp2", "audio/mpeg" },
     { ".mp2", "audio/x-mpeg" },
     { ".mp2", "video/mpeg" },
