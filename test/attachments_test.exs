@@ -19,6 +19,7 @@ defmodule AttachmentsTest do
     assert Mailman.Attachment.mime_full_for_path("image.gif") == "image/gif"
     assert Mailman.Attachment.mime_full_for_path("image.png") == "image/png"
     assert Mailman.Attachment.mime_full_for_path("invoice.pdf") == "application/pdf"
+    assert Mailman.Attachment.mime_full_for_path("file.strange") == "application/octet-stream"
     assert Mailman.Attachment.mime_full_for_path("settings.mobileconfig") == "application/x-apple-aspen-config"
   end
 
@@ -26,6 +27,7 @@ defmodule AttachmentsTest do
     assert Mailman.Attachment.mime_type_for_path("image.gif") == "image"
     assert Mailman.Attachment.mime_type_for_path("image.png") == "image"
     assert Mailman.Attachment.mime_type_for_path("invoice.pdf") == "application"
+    assert Mailman.Attachment.mime_type_for_path("file.strange") == "application"
     assert Mailman.Attachment.mime_type_for_path("settings.mobileconfig") == "application"
   end
 
@@ -33,6 +35,7 @@ defmodule AttachmentsTest do
     assert Mailman.Attachment.mime_sub_type_for_path("image.gif") == "gif"
     assert Mailman.Attachment.mime_sub_type_for_path("image.png") == "png"
     assert Mailman.Attachment.mime_sub_type_for_path("invoice.pdf") == "pdf"
+    assert Mailman.Attachment.mime_sub_type_for_path("file.strange") == "octet-stream"
     assert Mailman.Attachment.mime_sub_type_for_path("settings.mobileconfig") == "x-apple-aspen-config"
   end
 end

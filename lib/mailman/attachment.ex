@@ -689,7 +689,7 @@ defmodule Mailman.Attachment do
       ext == extension
     end
     case type do
-      nil -> nil
+      nil -> "application/octet-stream"
       _   -> elem(type, 1)
     end
   end
