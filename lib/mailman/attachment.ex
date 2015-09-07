@@ -668,7 +668,7 @@ defmodule Mailman.Attachment do
             file_path: file_path |> Path.basename,
             mime_type: mime_type_for_path(file_path),
             mime_sub_type: mime_sub_type_for_path(file_path),
-            data: data |> Base.encode64
+            data: data
           }
         }
       { :error, message } -> { :error, message }
