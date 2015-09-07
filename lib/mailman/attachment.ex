@@ -302,6 +302,7 @@ defmodule Mailman.Attachment do
     { ".moov", "video/quicktime" },
     { ".mov", "video/quicktime" },
     { ".movie", "video/x-sgi-movie" },
+    { ".mobileconfig", "application/x-apple-aspen-config" },
     { ".mp2", "audio/mpeg" },
     { ".mp2", "audio/x-mpeg" },
     { ".mp2", "video/mpeg" },
@@ -659,7 +660,7 @@ defmodule Mailman.Attachment do
 
   @doc "Get the attachment struct for given by path file from the file system"
   def inline(file_path) do
-    case Path.join(".", file_path) |> Path.expand |> File.read do
+    case file_path |> Path.expand |> File.read do
       { :ok, data } ->
         {
           :ok,
@@ -688,7 +689,7 @@ defmodule Mailman.Attachment do
       ext == extension
     end
     case type do
-      nil -> nil
+      nil -> "application/octet-stream"
       _   -> elem(type, 1)
     end
   end
