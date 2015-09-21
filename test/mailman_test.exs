@@ -105,7 +105,7 @@ Pictures!
           a.mime_sub_type == attachment.mime_sub_type
       end
       assert found != nil
-      assert found.file_path == Path.basename(found.file_path)
+      assert found.file_name == Path.basename(found.file_name)
     end
   end
 

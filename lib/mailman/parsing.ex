@@ -35,7 +35,7 @@ defmodule Mailman.Parsing do
     end
     if header != nil do
       value = elem(header, 1)
-      cond do 
+      cond do
         name == "To" || name == "Cc" || name == "Bcc" -> String.split(value, ",") |> Enum.map(&String.strip(&1))
         true -> value
       end
@@ -92,7 +92,7 @@ defmodule Mailman.Parsing do
 
   def raw_to_attachement(raw_part) do
     %Mailman.Attachment{
-      file_path: filename_from_raw(raw_part),
+      file_name: filename_from_raw(raw_part),
       mime_type: get_type(raw_part),
       mime_sub_type: get_subtype(raw_part),
       data: get_raw_body(raw_part)
