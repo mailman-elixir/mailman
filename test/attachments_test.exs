@@ -11,6 +11,7 @@ defmodule AttachmentsTest do
     { :error, _ } = Mailman.Attachment.inline(file_path)
   end
 
+
   test "Attachment with a different disposition filename" do
     { :ok, attachment } = Mailman.Attachment.inline("test/data/blank.png", "another_name.png")
     assert attachment.file_name == "another_name.png"
