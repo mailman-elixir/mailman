@@ -12,11 +12,15 @@ defmodule Mailman.ExternalSmtpAdapter do
       tls: config.tls,
       auth: config.auth
       ]
-      :gen_smtp_client.send_blocking {
+      ret = :gen_smtp_client.send_blocking {
         email.from,
         email.to,
         message
       }, relay_config
+      case ret do
+        { :error, _ } -> ret
+        _ -> { :ok, message }
+      end
   end
 
 end

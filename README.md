@@ -48,7 +48,6 @@ To be able to send emails, you only need to provide the SMTP config (like an ext
 
 And then to actually send an email:
 ```elixir
-  # Note that for now deliver/1 is blocking. In the future it will return a Task
   MyApp.Mailer.deliver testing_email
 ```
 
@@ -125,7 +124,7 @@ If you have the source of rendered email as a binary, you can use the `Mailman.E
 Here's an example from the test suite:
 
 ```elixir
-{:ok, message} = Task.await MyApp.Mailer.deliver(email_with_attachments)
+{:ok, message} = MyApp.Mailer.deliver(email_with_attachments)
 email = Mailman.Email.parse! message
 ```
 
@@ -177,4 +176,5 @@ This way you'll be able to use the parse! function to parse delivered emails.
 * Holger Amann ([https://github.com/hamann]())
 * Low Kian Seong ([https://github.com/lowks]())
 * Stian Håklev ([https://github.com/houshuang]())
-* Dejan Štrbac ([Dejan Štrbac]())
+* Dejan Štrbac ([https://github.com/dejanstrbac]())
+* Benjamin Nørgaard ([https://github.com/blacksails]())
