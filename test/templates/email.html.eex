@@ -1,0 +1,5 @@
+<html>
+  <body>
+    <b>Hello! <%= name %></b> These are Unicode: qżźół
+  </body>
+</html>
