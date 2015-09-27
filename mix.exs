@@ -9,7 +9,7 @@ defmodule Mailman.Mixfile do
       description: "Library providing a clean way of defining mailers in Elixir apps",
       package: package,
       version: "0.1.2",
-      elixir: "~> 1.0.0",
+      elixir: "~> 1.0",
       deps: deps ]
   end
 
