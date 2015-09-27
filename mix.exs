@@ -32,7 +32,7 @@ defmodule Mailman.Mixfile do
   defp package do
     [
       files: ["lib", "docs", "LICENSE", "README", "mix.exs"],
-      contributors: ["Kamil Ciemniewski <ciemniewski.kamil@gmail.com>"],
+      maintainers: ["Kamil Ciemniewski <ciemniewski.kamil@gmail.com>"],
       licenses: ["MIT"],
       links: %{
          "GitHub" => "https://github.com/kamilc/mailman",
