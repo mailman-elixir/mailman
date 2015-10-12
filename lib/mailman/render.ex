@@ -55,7 +55,7 @@ defmodule Mailman.Render do
   end
 
   def disposition_params_for(attachment) do
-    { "disposition-params", [{ "filename", attachment.file_path }] }
+    { "disposition-params", [{ "filename", attachment.file_name }] }
   end
 
   def mime_type_for(parts) when is_list(parts) do

@@ -96,6 +96,14 @@ Pictures!
     assert (Mailman.TestServer.deliveries |> Enum.count) == 0
   end
 
+
+  test "Ensure attachments are encoded and decoded properly" do
+    {:ok, attachment} = "test/data/blank.png" |> Path.expand |> File.read
+    {:ok, email} = Mailman.Render.render(email_with_attachments, %Mailman.EexComposeConfig{}) |> Mailman.Parsing.parse
+    assert attachment == email.attachments |> hd |> Map.get(:data)
+  end
+
+
   def assert_same_attachments(email1, email2) do
     assert Enum.count(email1.attachments) == Enum.count(email2.attachments)
     Enum.each email1.attachments, fn(attachment) ->
@@ -105,7 +113,7 @@ Pictures!
           a.mime_sub_type == attachment.mime_sub_type
       end
       assert found != nil
-      assert found.file_path == Path.basename(found.file_path)
+      assert found.file_name == Path.basename(found.file_name)
     end
   end
 

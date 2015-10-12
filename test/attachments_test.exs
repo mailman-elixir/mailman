@@ -11,6 +11,13 @@ defmodule AttachmentsTest do
     { :error, _ } = Mailman.Attachment.inline(file_path)
   end
 
+
+  test "Attachment with a different disposition filename" do
+    { :ok, attachment } = Mailman.Attachment.inline("test/data/blank.png", "another_name.png")
+    assert attachment.file_name == "another_name.png"
+    assert is_map(attachment)
+  end
+
   test "#mime_types returns the list of 647 types" do
     assert Enum.count(Mailman.Attachment.mime_types) == 647
   end
