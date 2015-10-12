@@ -7,7 +7,7 @@ defmodule Mailman.EexComposer do
     else
       case data do
         %{} -> template
-        data -> EEx.eval_string template, data
+        _ -> EEx.eval_string template, data
       end
     end
   end
@@ -18,7 +18,7 @@ defmodule Mailman.EexComposer do
     else
       case data do
         %{} -> template
-        data -> EEx.eval_string template, data
+        _ -> EEx.eval_string template, data
       end
     end
   end
