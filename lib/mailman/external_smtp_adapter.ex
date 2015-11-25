@@ -12,9 +12,11 @@ defmodule Mailman.ExternalSmtpAdapter do
       tls: config.tls,
       auth: config.auth
       ]
+      pure_from = Regex.run(~r/<((\w*\.?)*@(\w*\.?)*)>/, email.from) |> Enum.at(1)
+      pure_to   = Regex.run(~r/<((\w*\.?)*@(\w*\.?)*)>/, email.to) |> Enum.at(1)
       ret = :gen_smtp_client.send_blocking {
-        email.from,
-        email.to,
+        pure_from,
+        pure_to,
         message
       }, relay_config
       case ret do
