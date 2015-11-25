@@ -12,8 +12,8 @@ defmodule Mailman.ExternalSmtpAdapter do
       tls: config.tls,
       auth: config.auth
       ]
-      pure_from = Regex.run(~r/<((\w*\.?)*@(\w*\.?)*)>/, email.from) |> Enum.at(1)
-      pure_to   = Regex.run(~r/<((\w*\.?)*@(\w*\.?)*)>/, email.to) |> Enum.at(1)
+      pure_from = Regex.run(~r/<([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})>/, email.from) |> Enum.at(1)
+      pure_to   = Regex.run(~r/<([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})>/, email.to) |> Enum.at(1)
       ret = :gen_smtp_client.send_blocking {
         pure_from,
         pure_to,
