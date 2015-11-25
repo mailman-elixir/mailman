@@ -12,17 +12,23 @@ defmodule Mailman.ExternalSmtpAdapter do
       tls: config.tls,
       auth: config.auth
       ]
-      pure_from = Regex.run(~r/<([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})>/, email.from) |> Enum.at(1)
-      pure_to = Enum.map(email.to, &(Regex.run(~r/<([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})>/, &1) |> Enum.at(1)))
+      from_envelope_address = envelope_email(email.from)
+      to_envelope_address   = Enum.map(email.to, &(envelope_email(&1)))
       ret = :gen_smtp_client.send_blocking {
-        pure_from,
-        pure_to,
+        from_envelope_address,
+        to_envelope_address,
         message
       }, relay_config
       case ret do
         { :error, _ } -> ret
         _ -> { :ok, message }
       end
+  end
+
+
+  defp envelope_email(email_address) do
+    pure_from = Regex.run(~r/<([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})>/, email_address) 
+      |> Enum.at(1)
   end
 
 end
