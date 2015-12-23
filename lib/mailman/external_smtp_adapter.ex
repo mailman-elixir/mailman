@@ -19,6 +19,7 @@ defmodule Mailman.ExternalSmtpAdapter do
       }, relay_config
       case ret do
         { :error, _, _ } -> ret
+        { :error, _ } -> ret
         _ -> { :ok, message }
       end
   end
