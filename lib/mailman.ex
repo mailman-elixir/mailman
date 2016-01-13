@@ -1,12 +1,12 @@
 defmodule Mailman do
 
-  @doc "Protocol for implementing different medium of emails delivery"
   defprotocol Adapter do
+    @moduledoc "Protocol for implementing different medium of emails delivery"
     def deliver(context, email, message)
   end
 
-  @doc "Protocol for implementing different template systems for compiling email bodies"
   defprotocol Composer do
+    @moduledoc "Protocol for implementing different template systems for compiling email bodies"
     def compile_part(config, mode, email)
   end
 

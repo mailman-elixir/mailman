@@ -94,7 +94,7 @@ defmodule Mailman.Render do
       { "reply-to", email.reply_to },
       { "Cc",  email.cc |> as_list |> normalize_addresses |> Enum.join(", ") |> as_list },
       { "Bcc", email.bcc |> as_list |> normalize_addresses |> Enum.join(", ") |> as_list }
-    ] |> Enum.filter fn(i) -> elem(i, 1) != [] end
+    ] |> Enum.filter(fn(i) -> elem(i, 1) != [] end)
   end
 
   def as_list(value) when is_list(value) do
@@ -110,7 +110,7 @@ defmodule Mailman.Render do
   end
 
   def normalize_addresses(addresses) when is_list(addresses) do
-    addresses |> Enum.map fn(address) ->
+    addresses |> Enum.map(fn(address) ->
       case address |> String.split("<") |> Enum.count > 1 do
         true -> address
         false ->
@@ -119,10 +119,10 @@ defmodule Mailman.Render do
             List.first |>
             String.split(~r/([^\w\s]|_)/) |>
             Enum.map(&String.capitalize/1) |>
-            Enum.join " "
+            Enum.join(" ")
           "#{name} <#{address}>"
       end
-    end
+    end)
   end
 
   def compile_parts(email, composer) do

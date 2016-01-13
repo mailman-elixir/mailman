@@ -86,8 +86,10 @@ defmodule Mailman.Parsing do
   end
 
   def get_attachments(raw) do
-    Enum.filter(content_parts(raw), &is_raw_attachement(&1)) |>
-      Enum.map &raw_to_attachement(&1)
+    raw
+    |> content_parts
+    |> Enum.filter(&is_raw_attachement(&1))
+    |> Enum.map(&raw_to_attachement(&1))
   end
 
   def raw_to_attachement(raw_part) do
@@ -108,15 +110,15 @@ defmodule Mailman.Parsing do
   end
 
   def get_type(raw) when is_tuple(raw) do
-    raw |> elem 0
+    raw |> elem(0)
   end
 
   def get_subtype(raw) when is_tuple(raw) do
-    raw |> elem 1
+    raw |> elem(1)
   end
 
   def get_raw_body(raw) when is_tuple(raw) do
-    raw |> elem 4
+    raw |> elem(4)
   end
 
   def get_html(raw) do
