@@ -1,5 +1,5 @@
 defmodule Mailman.LocalSmtpConfig do
-  @moduledoc "Configuartion struct for the locally spawned SMTP server"
+  @moduledoc "Configuration struct for the locally spawned SMTP server"
 
   defstruct port: 2525
 end
