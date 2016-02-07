@@ -29,7 +29,7 @@ defmodule Mailman.Context do
       port: Application.get_env(:mailman, :port, 1111),
       ssl: Application.get_env(:mailman, :ssl, false),
       tls: Application.get_env(:mailman, :tls, :never),
-      auth: Application.get_env(:mailman, :tls, :always)
+      auth: Application.get_env(:mailman, :auth, :always)
     }
   end
 
