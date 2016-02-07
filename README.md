@@ -88,6 +88,19 @@ In this example we're setting up the library to use the local SMTP server create
 pid = Mailman.LocalServer.start(1234)
 ```
 
+### Configuration using Mix.Config
+
+You can pass context configuration to Mailman using Mix.Config. If you do set config field value in `Mailman.Context` struct, or if you set it to `nil`, Mailman expect to read the value from Mix.Config, generally in your `config,exs` file.
+
+Here is an example `mix.exs` file snippet for Mailman:
+
+```elixir
+config :mailman,
+  relay: "localhost",
+  port: 1025,
+  auth: :never
+```
+
 ### Defining emails
 
 The email struct is defined as:

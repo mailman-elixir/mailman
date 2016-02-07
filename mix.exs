@@ -8,7 +8,7 @@ defmodule Mailman.Mixfile do
       homepage_url: "https://github.com/kamilc/mailman",
       description: "Library providing a clean way of defining mailers in Elixir apps",
       package: package,
-      version: "0.2.1",
+      version: "0.2.2",
       elixir: "~> 1.0",
       deps: deps ]
   end
