@@ -11,6 +11,10 @@ defmodule MailmanTest do
       Mailman.deliver(email, config)
     end
 
+    def deliver(email, :send_cc_and_bcc) do
+      Mailman.deliver(email, config, :send_cc_and_bcc)
+    end
+
     def config do
       %Mailman.Context{
           config:   %Mailman.TestConfig{},
@@ -27,6 +31,28 @@ defmodule MailmanTest do
       to: [ "ciemniewski.kamil@gmail.com" ],
       cc: [ "testy2#tester1234.com", "abcd@defd.com" ],
       bcc: [ "1234@wsd.com" ],
+      data: [
+        name: "Yo"
+        ],
+      text: "Hello! <%= name %> These are Unicode: qżźół",
+      html: """
+<html>
+<body>
+ <b>Hello! <%= name %></b> These are Unicode: qżźół
+</body>
+</html>
+      """
+      }
+  end
+
+  def cc_and_bcc_testing_email do
+    %Mailman.Email{
+      subject: "Hello Mailman!",
+      from: "mailman@elixir.com",
+      reply_to: "reply@example.com",
+      to: [ "ciemniewski.kamil@gmail.com" ],
+      cc: [ "abcd@defd.com" ],
+      bcc: [ "1234@wsd.com", "5678@wsd.com" ],
       data: [
         name: "Yo"
         ],
@@ -70,6 +96,41 @@ Pictures!
 
   test "#deliver returns Task" do
     assert MyApp.Mailer.deliver(testing_email).__struct__ == Task
+  end
+
+  test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do 
+    assert MyApp.Mailer.deliver(testing_email, :send_cc_and_bcc) |> is_list == true
+    assert MyApp.Mailer.deliver(testing_email, :send_cc_and_bcc) |> List.first |> is_map == true
+  end
+
+  test "#deliver/2 sends emails to all address in CC and BCC list" do 
+    Mailman.TestServer.clear_deliveries
+    MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
+      |> Enum.map( fn(task) -> 
+        Task.await task
+      end)
+    assert (Mailman.TestServer.deliveries |> Enum.count) == 4
+  end
+
+  test "#deliver/2 redactes the BCC email from the TO message" do 
+    Mailman.TestServer.clear_deliveries
+    MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
+      |> Enum.map( fn(task) -> 
+        Task.await task
+      end)
+    to_email = Mailman.TestServer.deliveries |> List.last |> Mailman.Email.parse!
+    assert to_email.bcc == []
+  end
+
+  test "#deliver/2 adds the BCC email to a BCC receiver" do 
+    Mailman.TestServer.clear_deliveries
+    MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
+      |> Enum.map( fn(task) -> 
+        Task.await task
+      end)
+    bcc_email = Mailman.TestServer.deliveries |> List.first |> Mailman.Email.parse!
+    assert bcc_email.to == Mailman.Render.normalize_addresses(cc_and_bcc_testing_email.to)
+    assert bcc_email.bcc |> length == 1
   end
 
   test "encodes attachements properly" do
