@@ -13,7 +13,7 @@ defmodule Mailman do
   @doc "Delivers given email and returns a Task"
   def deliver(email, context) do
     message = Mailman.Render.render(email, context.composer)
-    Adapter.deliver(context.config, email, message)
+    Adapter.deliver(Mailman.Context.get_config(context), email, message)
   end
 
   @doc "Delivers given email to all addresses and returns a list of Tasks"
