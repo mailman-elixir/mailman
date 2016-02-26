@@ -192,3 +192,8 @@ This way you'll be able to use the parse! function to parse delivered emails.
 * Dejan Štrbac ([https://github.com/dejanstrbac]())
 * Benjamin Nørgaard ([https://github.com/blacksails]())
 * JustMikey ([https://github.com/JustMikey]())
+* swerter ([https://github.com/swerter]())
+* Richard Leland ([https://github.com/richleland]())
+* Max Neuvians ([https://github.com/maxneuvians]())
+* Jeff Weiss ([https://github.com/jeffweiss]())
+* Mickaël Rémond ([https://github.com/mremond]())
