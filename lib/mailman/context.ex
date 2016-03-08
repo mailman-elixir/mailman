@@ -14,10 +14,10 @@ defmodule Mailman.Context do
   defp get_mix_config do
     relay = Application.get_env(:mailman, :relay)
     port = Application.get_env(:mailman, :port)
-    case relay do
-      r when r != nil      -> mix_smtp_config relay
-      p when is_integer(p) -> mix_local_config p
-      _ -> mix_test_config
+    cond do
+      relay            -> mix_smtp_config relay
+      is_integer(port) -> mix_local_config port
+      true             -> mix_test_config
     end
   end
 
