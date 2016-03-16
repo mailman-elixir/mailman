@@ -1,6 +1,6 @@
 defmodule Mailman.Context do
   @moduledoc "Defines the configuration for both rendering and sending of messages"
- 
+
   defstruct config: nil, composer: %Mailman.EexComposeConfig{}
 
   def get_config(context) do
@@ -12,12 +12,22 @@ defmodule Mailman.Context do
   end
 
   defp get_mix_config do
-    relay = Application.get_env(:mailman, :relay)
-    port = Application.get_env(:mailman, :port)
-    case relay do
-      r when r != nil      -> mix_smtp_config relay
-      p when is_integer(p) -> mix_local_config p
-      _ -> mix_test_config
+    app_config = Map.new(Application.get_all_env(:mailman))
+    {config_adapter, adapter_config} = Map.pop(app_config, :adapter)
+    adapter = case config_adapter do
+      nil -> guess_adapter(adapter_config)
+      _ -> config_adapter
+    end
+    struct(adapter, adapter_config)
+  end
+
+  defp guess_adapter(config) do
+    relay = Map.get(config, :relay)
+    port = Map.get(config, :port)
+    cond do
+      relay -> mix_smtp_config relay
+      is_integer(port) -> mix_local_config port
+      true -> mix_test_config
     end
   end
 
@@ -42,5 +52,5 @@ defmodule Mailman.Context do
   defp mix_test_config do
     %Mailman.TestConfig{}
   end
-  
+
 end
