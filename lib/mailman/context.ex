@@ -1,46 +1,29 @@
 defmodule Mailman.Context do
   @moduledoc "Defines the configuration for both rendering and sending of messages"
- 
+
   defstruct config: nil, composer: %Mailman.EexComposeConfig{}
 
-  def get_config(context) do
-    case context.config do
-      # if config in context is nil, read it from config.exs
-      nil -> get_mix_config
-      _   -> context.config
-    end
-  end
+  def get_config(%{config: config}) when not is_nil(config),
+    do: config
+  def get_config(_),
+    do: get_mix_config
 
   defp get_mix_config do
+    config = Application.get_all_env(:mailman)
+    config_module = Keyword.get(config, :config_module) || detect_config_module
+
+    new_config = config_module.__struct__
+    {config_vars, _} = Keyword.split(config, Map.keys(new_config))
+    new_config |> Map.merge(Enum.into(config_vars, %{}))
+  end
+
+  defp detect_config_module do
     relay = Application.get_env(:mailman, :relay)
     port = Application.get_env(:mailman, :port)
-    case relay do
-      r when r != nil      -> mix_smtp_config relay
-      p when is_integer(p) -> mix_local_config p
-      _ -> mix_test_config
+    cond do
+      relay            -> Mailman.SmtpConfig
+      is_integer(port) -> Mailman.LocalSmtpConfig
+      true             -> Mailman.TestConfig
     end
   end
-
-  defp mix_smtp_config(relay) do
-    %Mailman.SmtpConfig{
-      relay: relay,
-      username: Application.get_env(:mailman, :username, ""),
-      password: Application.get_env(:mailman, :password, ""),
-      port: Application.get_env(:mailman, :port, 1111),
-      ssl: Application.get_env(:mailman, :ssl, false),
-      tls: Application.get_env(:mailman, :tls, :never),
-      auth: Application.get_env(:mailman, :auth, :always)
-    }
-  end
-
-  defp mix_local_config(port) do
-    %Mailman.LocalSmtpConfig{
-      port: port
-    }
-  end
-
-  defp mix_test_config do
-    %Mailman.TestConfig{}
-  end
-  
 end
