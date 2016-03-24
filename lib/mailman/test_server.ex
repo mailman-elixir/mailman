@@ -5,6 +5,21 @@ defmodule Mailman.TestServer do
   require Logger
 
   @doc """
+  Sets "global" mode.
+
+  When "global" mode is enabled, the calling process is ignored and a global
+  TestServer is used instead. Use this when you need to test e-mail sending
+  across multiple processes. Keep in mind that this is not async-safe, and you
+  should specify `async: false` when using ExUnit.
+  """
+  @spec set_global_mode!(boolean) :: boolean
+  def set_global_mode!(toggle) do
+    Application.put_env(:mailman, :global_mode, toggle, persistent: true)
+    _ = deliveries
+    toggle
+  end
+
+  @doc """
   Starts the TestServer supervisor. Provided for compatibility.
 
   Mailman.TestServerSupervisor.start_link/0 is preferred, typically in your
@@ -34,9 +49,16 @@ defmodule Mailman.TestServer do
   end
 
   defp pid_for(parent_pid) do
-    unless Process.alive?(parent_pid),
-      do: raise(ArgumentError, "parent pid is not alive")
+    if Application.get_env(:mailman, :global_mode, false) do
+      get_pid_for(:global_server)
+    else
+      unless Process.alive?(parent_pid),
+        do: raise(ArgumentError, "parent pid is not alive")
+      get_pid_for(parent_pid)
+    end
+  end
 
+  defp get_pid_for(parent_pid) do
     case :ets.lookup(:mailman_test_servers, parent_pid) do
       [] ->
         {:ok, pid} = Mailman.TestServerSupervisor.start_test_server(parent_pid)
@@ -48,7 +70,7 @@ defmodule Mailman.TestServer do
 
   def init({state, pid}) do
     :ets.insert(:mailman_test_servers, {pid, self})
-    Process.monitor(pid)
+    if is_pid(pid), do: Process.monitor(pid)
     {:ok, state}
   end
 

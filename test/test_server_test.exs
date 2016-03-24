@@ -3,6 +3,13 @@ defmodule Mailman.TestServerTest do
 
   alias Mailman.TestServer
 
+  setup do
+    on_exit fn ->
+      TestServer.set_global_mode! false
+    end
+    :ok
+  end
+
   test "asynchronous calls to TestServer don't interfere with each other" do
     tasks =
       for i <- 1..10 do
@@ -31,5 +38,19 @@ defmodule Mailman.TestServerTest do
     assert_raise ArgumentError, "parent pid is not alive", fn ->
       TestServer.deliveries(task.pid)
     end
+  end
+
+  test "global mode works" do
+    TestServer.set_global_mode! true
+
+    for i <- 1..10 do
+      Task.async(fn ->
+        TestServer.register_delivery({:test, i})
+        :timer.sleep(i * 20)
+        :ok
+      end)
+    end |> Enum.each(&Task.await/1)
+
+    assert length(TestServer.deliveries) == 10
   end
 end
