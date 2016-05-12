@@ -89,7 +89,7 @@ Pictures!
     { :ok, _  } = Mailman.Email.parse message
   end
 
-  test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do 
+  test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do
     assert MyApp.Mailer.deliver(testing_email, :send_cc_and_bcc) |> is_list == true
     assert MyApp.Mailer.deliver(testing_email, :send_cc_and_bcc) |> List.first |> is_tuple == true
   end

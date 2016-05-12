@@ -5,7 +5,7 @@ defmodule Mailman.LocalSmtpConfig do
 end
 
 defimpl Mailman.Adapter, for: Mailman.LocalSmtpConfig do
-  def deliver(config, email, message) do
-    Mailman.LocalSmtpAdapter.deliver(config, email, message)
+  def deliver(config, email, message, opts \\ []) do
+    Mailman.LocalSmtpAdapter.deliver(config, email, message, opts)
   end
 end

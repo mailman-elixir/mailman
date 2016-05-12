@@ -5,7 +5,7 @@ defmodule Mailman.TestConfig do
 end
 
 defimpl Mailman.Adapter, for: Mailman.TestConfig do
-  def deliver(config, email, message) do
-    Mailman.TestingAdapter.deliver(config, email, message)
+  def deliver(config, email, message, opts \\ []) do
+    Mailman.TestingAdapter.deliver(config, email, message, opts)
   end
 end
