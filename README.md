@@ -154,7 +154,7 @@ At this point, if the source contains the 'Date' header (meaning that it was put
 
 ### Inspecting deliveries when testing
 
-When you use the TestServer you can take a look at the deliveries whith:
+When you use the TestServer you can take a look at the deliveries with:
 
 ```elixir
   Mailman.TestServer.deliveries
