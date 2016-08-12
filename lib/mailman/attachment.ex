@@ -682,6 +682,35 @@ defmodule Mailman.Attachment do
     end
   end
 
+  def attach(url, file_name \\ nil) do
+    case is_valid_url(url) do
+      {:ok, uri} ->
+        response = HTTPotion.get(url, [timeout: 60_000])
+        case response.status_code do
+          200 ->
+            {
+              :ok,
+              %Mailman.Attachment{
+                file_name: file_name || Path.basename(url),
+                mime_type: mime_type_for_path(url),
+                mime_sub_type: mime_sub_type_for_path(url),
+                data: response.body
+              }
+            }
+          _ -> {:error, "File not found"}
+        end
+
+      {:error, message} -> {:error, message}
+    end
+  end
+
+  def attach!(url, file_name \\ nil) do
+    case attach(url, file_name) do
+      { :ok, attachment } -> attachment
+      { :error, message } -> throw message
+    end
+  end
+
   def mime_full_for_path(path) do
     extension = Path.extname(path)
     type = Enum.find mime_types, fn({ext, _}) ->
@@ -707,5 +736,21 @@ defmodule Mailman.Attachment do
 
   def mime_types do
     @mime_types
+  end
+
+  def is_valid_url(str) do
+    uri = URI.parse(str)
+
+    result = case uri do
+      %URI{scheme: nil} -> {:error, uri}
+      %URI{host: nil} -> {:error, uri}
+      %URI{path: nil} -> {:error, uri}
+      uri -> {:ok, uri}
+    end
+
+    case result do
+      {:ok, uri} -> :inet.gethostbyname(to_char_list uri.host)
+      _ -> result
+    end
   end
 end
