@@ -12,18 +12,18 @@ defmodule Mailman.ExternalSmtpAdapter do
       tls: config.tls,
       auth: config.auth
       ]
-      from_envelope_address = envelope_email(email.from)
-      to_envelope_address   = Enum.map(email.to, &(envelope_email(&1)))
-      ret = :gen_smtp_client.send_blocking {
-        from_envelope_address,
-        to_envelope_address,
-        message
-      }, relay_config
-      case ret do
-        { :error, _, _ } -> ret
-        { :error, _ } -> ret
-        _ -> { :ok, message }
-      end
+    from_envelope_address = envelope_email(email.from)
+    to_envelope_address   = Enum.map(email.to, &(envelope_email(&1)))
+    ret = :gen_smtp_client.send_blocking {
+      from_envelope_address,
+      to_envelope_address,
+      message
+    }, relay_config
+    case ret do
+      { :error, _, _ } -> ret
+      { :error, _ } -> ret
+      _ -> { :ok, message }
+    end
   end
 
 
