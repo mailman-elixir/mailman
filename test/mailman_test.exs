@@ -1,11 +1,6 @@
 defmodule MailmanTest do
   use ExUnit.Case, async: true
 
-  setup_all do
-    Mailman.TestServer.start
-    :ok
-  end
-
   defmodule MyApp.Mailer do
     def deliver(email) do
       Mailman.deliver(email, config)
@@ -98,34 +93,34 @@ Pictures!
     assert MyApp.Mailer.deliver(testing_email).__struct__ == Task
   end
 
-  test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do 
+  test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do
     assert MyApp.Mailer.deliver(testing_email, :send_cc_and_bcc) |> is_list == true
     assert MyApp.Mailer.deliver(testing_email, :send_cc_and_bcc) |> List.first |> is_map == true
   end
 
-  test "#deliver/2 sends emails to all address in CC and BCC list" do 
+  test "#deliver/2 sends emails to all address in CC and BCC list" do
     Mailman.TestServer.clear_deliveries
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
-      |> Enum.map( fn(task) -> 
+      |> Enum.map( fn(task) ->
         Task.await task
       end)
     assert (Mailman.TestServer.deliveries |> Enum.count) == 4
   end
 
-  test "#deliver/2 redactes the BCC email from the TO message" do 
+  test "#deliver/2 redactes the BCC email from the TO message" do
     Mailman.TestServer.clear_deliveries
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
-      |> Enum.map( fn(task) -> 
+      |> Enum.map( fn(task) ->
         Task.await task
       end)
     to_email = Mailman.TestServer.deliveries |> List.last |> Mailman.Email.parse!
     assert to_email.bcc == []
   end
 
-  test "#deliver/2 adds the BCC email to a BCC receiver" do 
+  test "#deliver/2 adds the BCC email to a BCC receiver" do
     Mailman.TestServer.clear_deliveries
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
-      |> Enum.map( fn(task) -> 
+      |> Enum.map( fn(task) ->
         Task.await task
       end)
     bcc_email = Mailman.TestServer.deliveries |> List.first |> Mailman.Email.parse!
@@ -219,7 +214,7 @@ Pictures!
     {:ok, message} = Task.await(MyApp.ExternalTextMailer.deliver(
       email_with_external_text))
     email = Mailman.Email.parse! message
-    assert email.text == 
+    assert email.text ==
            EEx.eval_file(email_with_external_text.text,
                          email_with_external_text.data)
   end
@@ -238,7 +233,7 @@ Pictures!
         }
     end
   end
-  
+
   def email_with_external_html do
     %Mailman.Email{
       subject: "Hello Mailman!",
@@ -259,7 +254,7 @@ Pictures!
     {:ok, message} = Task.await(MyApp.ExternalHTMLMailer.deliver(
       email_with_external_html))
     email = Mailman.Email.parse! message
-    assert email.html == 
+    assert email.html ==
            EEx.eval_file(email_with_external_html.html,
                          email_with_external_html.data)
   end
@@ -281,7 +276,7 @@ Pictures!
         }
     end
   end
-  
+
   def email_with_template_paths do
     %Mailman.Email{
       subject: "Hello Mailman!",
@@ -297,12 +292,12 @@ Pictures!
       html: "email.html.eex"
       }
   end
-  
+
   test "should load email parts from external file based on x_file_path" do
     {:ok, message} = Task.await(MyApp.ExternalTemplatesMailer.deliver(
       email_with_template_paths))
     email = Mailman.Email.parse! message
-    assert email.html == 
+    assert email.html ==
            EEx.eval_file("test/templates/#{email_with_template_paths.html}",
                          email_with_template_paths.data)
     assert email.text ==
