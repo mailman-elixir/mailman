@@ -8,7 +8,7 @@ defmodule Mailman.Mixfile do
       homepage_url: "https://github.com/kamilc/mailman",
       description: "Library providing a clean way of defining mailers in Elixir apps",
       package: package,
-      version: "0.2.2",
+      version: "0.3.0",
       elixir: "~> 1.0",
       deps: deps ]
   end
@@ -19,7 +19,6 @@ defmodule Mailman.Mixfile do
   end
 
   # Returns the list of dependencies in the format:
-  # { :foobar, "~> 0.1", git: "https://github.com/elixir-lang/foobar.git" }
   defp deps do
     [
       { :eiconv, github: "zotonic/eiconv" },
