@@ -101,6 +101,15 @@ config :mailman,
   auth: :never
 ```
 
+You can also explicitely set the adapter. In this case, all the other options will be used when creating the adapter config:
+
+```elixir
+config :mailman,
+  adapter: MyApp.MyMailAdapter,
+  port: 1025,
+  custom_param: "something"
+```
+
 ### Defining emails
 
 The email struct is defined as:
