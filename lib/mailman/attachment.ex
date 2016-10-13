@@ -95,6 +95,7 @@ defmodule Mailman.Attachment do
     { ".csh", "text/x-script.csh" },
     { ".css", "application/x-pointplus" },
     { ".css", "text/css" },
+    { ".csv", "text/csv" },
     { ".cxx", "text/plain" },
     { ".dcr", "application/x-director" },
     { ".deepv", "application/x-deepv" },
