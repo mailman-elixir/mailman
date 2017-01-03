@@ -685,7 +685,7 @@ defmodule Mailman.Attachment do
 
   def attach(url, file_name \\ nil) do
     case is_valid_url(url) do
-      {:ok, uri} ->
+      {:ok, _} ->
         response = HTTPotion.get(url, [timeout: 60_000])
         case response.status_code do
           200 ->
@@ -714,7 +714,7 @@ defmodule Mailman.Attachment do
 
   def mime_full_for_path(path) do
     extension = Path.extname(path)
-    type = Enum.find mime_types, fn({ext, _}) ->
+    type = Enum.find mime_types(), fn({ext, _}) ->
       ext == extension
     end
     case type do

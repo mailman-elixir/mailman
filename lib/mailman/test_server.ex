@@ -15,7 +15,7 @@ defmodule Mailman.TestServer do
   @spec set_global_mode!(boolean) :: boolean
   def set_global_mode!(toggle) do
     Application.put_env(:mailman, :global_mode, toggle, persistent: true)
-    _ = deliveries
+    _ = deliveries()
     toggle
   end
 
@@ -33,17 +33,17 @@ defmodule Mailman.TestServer do
     GenServer.start_link(__MODULE__, {initial_state, parent_pid}, [])
   end
 
-  def deliveries, do: deliveries(self)
+  def deliveries, do: deliveries(self())
   def deliveries(pid) do
     GenServer.call(pid_for(pid), :list)
   end
 
-  def register_delivery(message), do: register_delivery(self, message)
+  def register_delivery(message), do: register_delivery(self(), message)
   def register_delivery(pid, message) do
     GenServer.cast(pid_for(pid), {:push, message})
   end
 
-  def clear_deliveries, do: clear_deliveries(self)
+  def clear_deliveries, do: clear_deliveries(self())
   def clear_deliveries(pid) do
     GenServer.call(pid_for(pid), :clear_deliveries)
   end
@@ -69,7 +69,7 @@ defmodule Mailman.TestServer do
   end
 
   def init({state, pid}) do
-    :ets.insert(:mailman_test_servers, {pid, self})
+    :ets.insert(:mailman_test_servers, {pid, self()})
     if is_pid(pid), do: Process.monitor(pid)
     {:ok, state}
   end

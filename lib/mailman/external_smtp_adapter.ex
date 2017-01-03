@@ -28,7 +28,7 @@ defmodule Mailman.ExternalSmtpAdapter do
 
 
   defp envelope_email(email_address) do
-    pure_from = Regex.run(~r/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/, email_address) 
+    Regex.run(~r/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/, email_address) 
       |> Enum.at(1)
   end
 
