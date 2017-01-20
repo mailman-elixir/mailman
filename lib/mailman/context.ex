@@ -6,7 +6,7 @@ defmodule Mailman.Context do
   def get_config(context) do
     case context.config do
       # if config in context is nil, read it from config.exs
-      nil -> get_mix_config
+      nil -> get_mix_config()
       _   -> context.config
     end
   end
@@ -27,7 +27,7 @@ defmodule Mailman.Context do
     cond do
       relay -> mix_smtp_config relay
       is_integer(port) -> mix_local_config port
-      true -> mix_test_config
+      true -> mix_test_config()
     end
   end
 
