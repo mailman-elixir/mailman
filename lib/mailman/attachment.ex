@@ -714,7 +714,7 @@ defmodule Mailman.Attachment do
 
   def mime_full_for_path(path) do
     extension = Path.extname(path)
-    type = Enum.find mime_types, fn({ext, _}) ->
+    type = Enum.find mime_types(), fn({ext, _}) ->
       ext == extension
     end
     case type do
