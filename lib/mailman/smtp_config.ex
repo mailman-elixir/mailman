@@ -12,7 +12,7 @@ defmodule Mailman.SmtpConfig do
 end
 
 defimpl Mailman.Adapter, for: Mailman.SmtpConfig do
-  def deliver(config, email, message) do
-    Mailman.ExternalSmtpAdapter.deliver(config, email, message)
+  def deliver(config, email, message, opts \\ []) do
+    Mailman.ExternalSmtpAdapter.deliver(config, email, message, opts)
   end
 end
