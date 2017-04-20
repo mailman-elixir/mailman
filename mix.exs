@@ -7,10 +7,10 @@ defmodule Mailman.Mixfile do
       source_url: "https://github.com/kamilc/mailman",
       homepage_url: "https://github.com/kamilc/mailman",
       description: "Library providing a clean way of defining mailers in Elixir apps",
-      package: package,
+      package: package(),
       version: "0.3.0",
       elixir: "~> 1.0",
-      deps: deps ]
+      deps: deps() ]
   end
 
   # Configuration for the OTP application
