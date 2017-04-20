@@ -191,7 +191,7 @@ As an example:
 ```elixir
 defp deps do
   [
-    {:mailman, "~> 0.1.0"},
+    {:mailman, "~> 0.4.0"},
     {:eiconv, github: "zotonic/eiconv"}
   ]
 end
@@ -209,7 +209,7 @@ This way you'll be able to use the parse! function to parse delivered emails.
 
 ## Contributors
 
-* Josh Adams ([https://github.com/knewter]())
+* Josh Adams ([[[https://github.com/knewter]())
 * Dan McClain ([https://github.com/danmcclain]())
 * Holger Amann ([https://github.com/hamann]())
 * Low Kian Seong ([https://github.com/lowks]())
@@ -222,12 +222,14 @@ This way you'll be able to use the parse! function to parse delivered emails.
 * Max Neuvians ([https://github.com/maxneuvians]())
 * Jeff Weiss ([https://github.com/jeffweiss]())
 * Mickaël Rémond ([https://github.com/mremond]())
-* Anthony Graham ([https://github.com/trinode])
-* Gerry Shaw ([https://github.com/gshaw])
-* Martin Maillard ([https://github.com/martinmaillard])
-* Keitaroh Kobayashi ([https://github.com/keichan34])
-* Arunvel Sriram ([https://github.com/arunvelsriram])
-* Martin Chabot ([https://github.com/martinos])
-* Mike Martinson ([https://github.com/mmartinson])
-* Wojciech Stachowski ([https://github.com/Antiavanti])
-* Uģis Ozols ([https://github.com/ugisozols])
+* Anthony Graham ([https://github.com/trinode]())
+* Gerry Shaw ([https://github.com/gshaw]())
+* Martin Maillard ([https://github.com/martinmaillard]())
+* Keitaroh Kobayashi ([https://github.com/keichan34]())
+* Arunvel Sriram ([https://github.com/arunvelsriram]())
+* Martin Chabot ([https://github.com/martinos]())
+* Mike Martinson ([https://github.com/mmartinson]())
+* Wojciech Stachowski ([https://github.com/Antiavanti]())
+* Uģis Ozols ([https://github.com/ugisozols]())
+* Martin Schurig ([https://github.com/schurig]())
+* Mathieu Rhéaume ([https://github.com/ddrmanxbxfr]())
