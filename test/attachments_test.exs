@@ -18,8 +18,8 @@ defmodule AttachmentsTest do
     assert is_map(attachment)
   end
 
-  test "#mime_types returns the list of 647 types" do
-    assert Enum.count(Mailman.Attachment.mime_types) == 647
+  test "#mime_types returns the list of 648 types" do
+    assert Enum.count(Mailman.Attachment.mime_types) == 648
   end
 
   test "#mime_type_for_path returns proper type" do
