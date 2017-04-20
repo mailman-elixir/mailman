@@ -191,7 +191,7 @@ As an example:
 ```elixir
 defp deps do
   [
-    {:mailman, "~> 0.1.0"},
+    {:mailman, "~> 0.3.0"},
     {:eiconv, github: "zotonic/eiconv"}
   ]
 end
