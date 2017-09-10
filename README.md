@@ -166,7 +166,7 @@ To be able to send emails using an external SMTP server `SmtpConfig` can be used
 
 ### Configuration using Mix.Config
 
-You can pass context configuration to Mailman using Mix.Config. If you don't set `config` field value in `Mailman.Context{}` struct, or if you set it to `nil`, Mailman expect to read the value from Mix.Config (anywhere in your `config.exs` file, or a file imported by it).
+You can pass context configuration to Mailman using `Mix.Config`. If you don't set a `config` field value in `Mailman.Context{}` struct, or if you set it to `nil`, Mailman expect to read the value from your `config.exs` file (or a file imported by it).
 
 Here is an example config file snippet for Mailman:
 
@@ -204,7 +204,7 @@ defstruct subject: "",
 ```
 
 ### CC and BCC
-To instruct Mailman to actually send copies of your email to the listed CC and BCC recipients, use `Mailman.deliver(email, config, :send_cc_and_bcc)`. This, unfortunately, goes against the behaviour we are used to in end-user email apps, but reflects how SMTP servers work.
+To instruct Mailman to actually send copies of your email to the listed CC and BCC recipients, use `Mailman.deliver(email, config, :send_cc_and_bcc)`. This, unfortunately, goes against the behaviour you are probably used to from end-user email apps, but reflects how SMTP servers work.
 
 The `:cc`/`:bcc` fields only add corresponding *header lines* to the rendered email source. They do not, by themselves, magically effect delivery of actual copies to those recipients – they only change what's written on the envelope, so to speak. By default, Mailman will render the email struct and deliver it to the SMTP server only once, with a single set of recipients – those in the `:to` list. The `:send_cc_and_bcc` flag is a shortcut that will cause delivery of multiple emails at once. It returns a list of Tasks you can process.
 
@@ -235,7 +235,7 @@ attachments: [
 ],
 ```
 
-`file_path_or_url` can be an absolute file path, or one relative to the root of your project. You can also give it a URL, in which case it will download the file for you before wrapping it in the Attachment struct.
+`file_path_or_url` can be an absolute file path, or one relative to the root of your project. You can also give it a URL, in which case Mailman will download the file for you before wrapping it in the Attachment struct.
 
 `file_name` (optional) allows you to change the attachment's file name in the email.
 
@@ -246,9 +246,9 @@ Note that the `attach!` option will throw an exception if it cannot open the fil
 #### Inline images
 Emails can take inline content – typically, this is used for inlined images in the HTML part of the email. To add an inline image, first attach the file using the `inline!` function (instead of `attach!` – the arguments are the same). Then reference the image in your HTML body as follows:
 ```html
-<img alt="foobar" src="<%= URI.encode("your_filename.jpg") %>@mailman.attachment" />
+<img alt="foobar" src="cid:<%= URI.encode("your_filename.jpg") %>@mailman.attachment" />
 ```
-The `@mailman.attachment` suffix is meaningless but necessary for compliance with RFC 2392.
+The `cid:` prefix tells the email client that what follows is the `Content-ID` of an inlined attachment. The `@mailman.attachment` suffix is a meaningless dummy string (RFC 2392 requires Content IDs to look like email addresses).
 
 ### Adding extra headers
 
