@@ -39,7 +39,7 @@ Mailman is a wrapper around the mighty (but rather low-level) [gen_smtp](https:/
 
   # somewhere else:
   def test_email do
-    %Mailman.Email{
+    email = %Mailman.Email{
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
       to: ["testy@tester123456.com"],
@@ -56,13 +56,10 @@ Mailman is a wrapper around the mighty (but rather low-level) [gen_smtp](https:/
 </body>
 </html>
       """
-      }
+    }
+     
+    MyApp.Mailer.deliver(email)
   end
-```
-
-And then to actually send an email:
-```elixir
-  MyApp.Mailer.deliver(testing_email)
 ```
 
 As you can see, all you need is a `%Mailman.Email{}` struct containing your email and a `%Mailman.Context{}` with the configuration data.
