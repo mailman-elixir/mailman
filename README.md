@@ -1,12 +1,18 @@
-## Mailman
+## Mailman 👮
 
 Mailman lets you send email from your Elixir app.
 
-Mailman allows you to send multi-part email messages containing text and html parts, including attachments and inline images. It encodes messages with a proper quoted-printable encoding.
+* Plain text or multi-part email (plain text and HTML)
+* Inline images in HTML part
+* Attachments (with semi-automatic MIME type detection)
+* Easy-peasy SMTP config
+* Rendering via EEx
+* Standard quoted-printable encoding
+* Automatic CC and BCC delivery
+* Custom headers
+* SMTP delivery timestamps
 
-To define a mailer, all you need is the SMTP config (i.e. your typical hostname, credentials etc.).
-
-Mailman is a wrapper around the mighty (but low-level) [gen_smtp](https://github.com/vagabond/gen_smtp), the popular Erlang SMTP library by Andrew Thompson et al.
+Mailman is a wrapper around the mighty (but rather low-level) [gen_smtp](https://github.com/vagabond/gen_smtp), the popular Erlang SMTP library.
 
 ### A quick example
 
