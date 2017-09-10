@@ -2,7 +2,7 @@ defmodule Mailman.Parsing do
   @moduledoc "Functions for parsin mail messages into Elixir structs"
 
   def parse(message) when is_binary(message) do
-    { :ok, parse(:mimemail.decode(message)) }
+    {:ok, parse(:mimemail.decode(message))}
   end
 
   @doc "Parses given mime mail and returns Email"
@@ -36,7 +36,7 @@ defmodule Mailman.Parsing do
     if header != nil do
       value = elem(header, 1)
       cond do
-        name == "To" || name == "Cc" || name == "Bcc" -> String.split(value, ",") |> Enum.map(&String.strip(&1))
+        name == "To" || name == "Cc" || name == "Bcc" -> String.split(value, ",") |> Enum.map(&String.trim(&1))
         true -> value
       end
     else
@@ -104,9 +104,10 @@ defmodule Mailman.Parsing do
   def content_parts(raw) when is_tuple(raw) do
     body = get_raw_body(raw)
     cond do
-      is_binary(body) -> [ raw ]
+      is_binary(body) -> [raw]
       is_list(body)   -> Enum.map(body, &content_parts(&1))
-    end |> List.flatten
+    end
+    |> List.flatten
   end
 
   def get_type(raw) when is_tuple(raw) do

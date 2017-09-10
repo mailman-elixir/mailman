@@ -4,7 +4,15 @@ defmodule Mailman.Attachment do
   defstruct file_name: "",
     mime_type: "",
     mime_sub_type: "",
-    data: ""
+    data: "",
+    disposition: ""
+
+  @type t :: %__MODULE__{
+    file_name: String.t,
+    mime_type: String.t,
+    data: String.t,
+    disposition: String.t,
+  }
 
   @mime_types [
     { ".3dm", "x-world/x-3dmf" },
@@ -95,6 +103,7 @@ defmodule Mailman.Attachment do
     { ".csh", "text/x-script.csh" },
     { ".css", "application/x-pointplus" },
     { ".css", "text/css" },
+    { ".csv", "text/csv" },
     { ".cxx", "text/plain" },
     { ".dcr", "application/x-director" },
     { ".deepv", "application/x-deepv" },
@@ -656,101 +665,102 @@ defmodule Mailman.Attachment do
     { ".zsh", "text/x-script.zsh" }
     ]
 
-
-  @doc "Get the attachment struct for given by path file from the file system"
-  def inline(file_path, file_name \\ nil) do
-    case file_path |> Path.expand |> File.read do
-      { :ok, data } ->
-        {
-          :ok,
-          %Mailman.Attachment{
-            file_name: file_name || Path.basename(file_path),
-            mime_type: mime_type_for_path(file_path),
-            mime_sub_type: mime_sub_type_for_path(file_path),
-            data: data
-          }
-        }
-      { :error, message } -> { :error, message }
-    end
-  end
-
-  @doc "Get the attachment struct for given by path file from the file system and throw an error if anything goes wrong."
-  def inline!(file_path, file_name \\ nil) do
-    case inline(file_path, file_name) do
-      { :ok, attachment } -> attachment
-      { :error, message } -> throw message
-    end
-  end
-
-  def attach(url, file_name \\ nil) do
-    case is_valid_url(url) do
-      {:ok, uri} ->
+  defp get_attachment_data_via_http(url) do
+    case is_valid_url?(url) do
+      {:ok, _} ->
         response = HTTPotion.get(url, [timeout: 60_000])
         case response.status_code do
-          200 ->
-            {
-              :ok,
-              %Mailman.Attachment{
-                file_name: file_name || Path.basename(url),
-                mime_type: mime_type_for_path(url),
-                mime_sub_type: mime_sub_type_for_path(url),
-                data: response.body
-              }
-            }
-          _ -> {:error, "File not found"}
+          200 -> {:ok, response.body}
+          _ -> {:error, :invalid_http_response}
         end
-
-      {:error, message} -> {:error, message}
+      {:error, message} ->
+          {:error, message}
     end
   end
 
-  def attach!(url, file_name \\ nil) do
-    case attach(url, file_name) do
+  defp get_attachment_data_from_disk(file_path) do
+    file_path
+    |> Path.expand
+    |> File.read
+  end
+
+  @spec get_attachment_data(String.t) :: {:ok, String.t} | {:error, String.t}
+  defp get_attachment_data(url_or_file_path) do
+    if is_valid_url?(url_or_file_path) do
+      get_attachment_data_via_http(url_or_file_path)
+    else
+      get_attachment_data_from_disk(url_or_file_path)
+    end
+  end
+
+  def create(url_or_file_path, disposition, file_name \\ nil, mime_tuple \\ nil) do
+    data = get_attachment_data(url_or_file_path)
+    {mime_type, mime_subtype} = mime_tuple || mime_type_and_subtype_from_extension(url_or_file_path)
+    case data do
+      {:ok, data} ->
+        {:ok, %Mailman.Attachment{
+          file_name: file_name || Path.basename(url_or_file_path),
+          mime_type: mime_type,
+          mime_sub_type: mime_subtype,
+          data: data,
+          disposition: "inline"
+        }}
+      {:error, message} ->
+          {:error, message}
+    end
+  end
+
+  @doc "Get the attachment struct with disposition 'inline'."
+  @spec inline(String.t, String.t, {String.t, String.t}) :: {:ok, t} | {:error, String.t}
+  def inline(url_or_file_path, file_name \\ nil, mime_tuple \\ nil) do
+    create(url_or_file_path, "inline", file_name, mime_tuple)
+  end
+
+  @doc "Get the attachment struct with disposition 'inline'. Throw an error if anything goes wrong."
+  @spec inline(String.t, String.t, {String.t, String.t}) :: t
+  def inline!(url_or_file_path, file_name \\ nil, mime_tuple \\ nil) do
+    case inline(url_or_file_path, file_name, mime_tuple) do
+      {:ok, attachment} -> attachment
+      {:error, message} -> throw message
+    end
+  end
+
+  @doc "Get the attachment struct with disposition 'attachment'."
+  def attach(url_or_file_path, file_name \\ nil, mime_tuple \\ nil) do
+    create(url_or_file_path, "attachment", file_name, mime_tuple)
+  end
+
+  @doc "Get the attachment struct with disposition 'attachment'. Throw an error if anything goes wrong."
+  def attach!(url_or_file_path, file_name \\ nil, mime_tuple \\ nil) do
+    case attach(url_or_file_path, file_name, mime_tuple) do
       { :ok, attachment } -> attachment
       { :error, message } -> throw message
     end
   end
 
-  def mime_full_for_path(path) do
+  def mime_type_and_subtype_from_extension(path) do
     extension = Path.extname(path)
-    type = Enum.find mime_types, fn({ext, _}) ->
+    type = Enum.find(mime_types(), fn({ext, _}) ->
       ext == extension
-    end
+    end)
     case type do
       nil -> "application/octet-stream"
       _   -> elem(type, 1)
     end
-  end
-
-  def mime_type_for_path(path) do
-    mime_full_for_path(path) |>
-      String.split("/") |>
-      List.first
-  end
-
-  def mime_sub_type_for_path(path) do
-    mime_full_for_path(path) |>
-      String.split("/") |>
-      List.last
+    |> String.split("/")
+    |> List.to_tuple
   end
 
   def mime_types do
     @mime_types
   end
 
-  def is_valid_url(str) do
-    uri = URI.parse(str)
-
-    result = case uri do
-      %URI{scheme: nil} -> {:error, uri}
-      %URI{host: nil} -> {:error, uri}
-      %URI{path: nil} -> {:error, uri}
-      uri -> {:ok, uri}
-    end
-
-    case result do
-      {:ok, uri} -> :inet.gethostbyname(to_char_list uri.host)
-      _ -> result
+  def is_valid_url?(str) do
+    case URI.parse(str) do
+      %URI{scheme: nil} -> false
+      %URI{host: nil} -> false
+      %URI{path: nil} -> false
+      uri -> match?({:ok, _}, :inet.gethostbyname(to_charlist(uri.host)))
     end
   end
 end

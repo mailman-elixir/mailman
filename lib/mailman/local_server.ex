@@ -70,7 +70,7 @@ defmodule Mailman.LocalServer do
 
   def relay(from, [to|rest], data) do
     host = String.split(to, "@") |> List.last
-    :gen_smtp_client.send {from, [to], String.to_char_list(data)}, [{:relay, host}]
+    :gen_smtp_client.send {from, [to], String.to_charlist(data)}, [{:relay, host}]
     relay(from, rest, data)
   end
 
