@@ -3,11 +3,11 @@ defmodule MailmanTest do
 
   defmodule MyApp.Mailer do
     def deliver(email) do
-      Mailman.deliver(email, config)
+      Mailman.deliver(email, config())
     end
 
     def deliver(email, :send_cc_and_bcc) do
-      Mailman.deliver(email, config, :send_cc_and_bcc)
+      Mailman.deliver(email, config(), :send_cc_and_bcc)
     end
 
     def config do
@@ -72,7 +72,7 @@ defmodule MailmanTest do
       bcc: [],
       attachments: [
         Mailman.Attachment.inline!("test/data/blank.png")
-        ],
+      ],
       text: "Pictures!",
       html: """
 <html>
@@ -85,22 +85,24 @@ Pictures!
   end
 
   test "sending testing emails works" do
-    { :ok, message } = MyApp.Mailer.deliver(testing_email)
-    { :ok, _  } = Mailman.Email.parse message
+    {:ok, message} = MyApp.Mailer.deliver(testing_email())
+    {:ok, _} = Mailman.Email.parse(message)
   end
 
   test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do 
-    assert MyApp.Mailer.deliver(testing_email, :send_cc_and_bcc) |> is_list == true
-    assert MyApp.Mailer.deliver(testing_email, :send_cc_and_bcc) |> List.first |> is_tuple == true
+    assert MyApp.Mailer.deliver(testing_email(), :send_cc_and_bcc) |> is_list == true
+    assert MyApp.Mailer.deliver(testing_email(), :send_cc_and_bcc) |> List.first |> is_tuple == true
   end
 
   test "#deliver/2 sends emails to all address in CC and BCC list" do
+    cc_and_bcc_testing_email = cc_and_bcc_testing_email()
     Mailman.TestServer.clear_deliveries
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
     assert (Mailman.TestServer.deliveries |> Enum.count) == 4
   end
 
   test "#deliver/2 redactes the BCC email from the TO message" do
+    cc_and_bcc_testing_email = cc_and_bcc_testing_email()
     Mailman.TestServer.clear_deliveries
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
     to_email = Mailman.TestServer.deliveries |> List.last |> Mailman.Email.parse!
@@ -108,6 +110,7 @@ Pictures!
   end
 
   test "#deliver/2 adds the BCC email to a BCC receiver" do
+    cc_and_bcc_testing_email = cc_and_bcc_testing_email()
     Mailman.TestServer.clear_deliveries
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
     bcc_email = Mailman.TestServer.deliveries |> List.first |> Mailman.Email.parse!
@@ -116,6 +119,7 @@ Pictures!
   end
 
   test "encodes attachements properly" do
+    email_with_attachments = email_with_attachments()
     {:ok, message} = MyApp.Mailer.deliver(email_with_attachments)
     email = Mailman.Email.parse! message
     assert email.from == email_with_attachments.from
@@ -130,22 +134,27 @@ Pictures!
   end
 
   test "the message sent queue contains the latest sent messages" do
+    email_with_attachments = email_with_attachments()
     Mailman.TestServer.clear_deliveries
     { :ok, _ } = MyApp.Mailer.deliver(email_with_attachments)
     assert (Mailman.TestServer.deliveries |> Enum.count) == 1
-    { :ok, _ } = MyApp.Mailer.deliver(testing_email)
+    { :ok, _ } = MyApp.Mailer.deliver(testing_email())
     assert (Mailman.TestServer.deliveries |> Enum.count) == 2
     Mailman.TestServer.clear_deliveries
     assert (Mailman.TestServer.deliveries |> Enum.count) == 0
   end
 
-
   test "Ensure attachments are encoded and decoded properly" do
+    email_with_attachments = email_with_attachments()
     {:ok, attachment} = "test/data/blank.png" |> Path.expand |> File.read
     {:ok, email} = Mailman.Render.render(email_with_attachments, %Mailman.EexComposeConfig{}) |> Mailman.Parsing.parse
     assert attachment == email.attachments |> hd |> Map.get(:data)
   end
 
+  test "Render with extra email headers" do
+    rendered_email = Mailman.Render.render(testing_email(), %Mailman.EexComposeConfig{}, [{"X-Test-Header", "123"}])
+    rendered_email =~ "X-Test-Header: 123"  # Just check whether it contains it for now
+  end
 
   def assert_same_attachments(email1, email2) do
     assert Enum.count(email1.attachments) == Enum.count(email2.attachments)
@@ -162,7 +171,7 @@ Pictures!
 
   defmodule MyApp.ExternalTextMailer do
     def deliver(email) do
-      Mailman.deliver(email, config)
+      Mailman.deliver(email, config())
     end
 
     def config do
@@ -198,6 +207,7 @@ Pictures!
   end
 
   test "should load text part of email from external file" do
+    email_with_external_text = email_with_external_text()
     {:ok, message} = MyApp.ExternalTextMailer.deliver(
       email_with_external_text)
     email = Mailman.Email.parse! message
@@ -208,7 +218,7 @@ Pictures!
 
   defmodule MyApp.ExternalHTMLMailer do
     def deliver(email) do
-      Mailman.deliver(email, config)
+      Mailman.deliver(email, config())
     end
 
     def config do
@@ -238,6 +248,7 @@ Pictures!
   end
 
   test "should load html part of email from external file" do
+    email_with_external_html = email_with_external_html()
     {:ok, message} = MyApp.ExternalHTMLMailer.deliver(
       email_with_external_html)
     email = Mailman.Email.parse! message
@@ -248,7 +259,7 @@ Pictures!
 
   defmodule MyApp.ExternalTemplatesMailer do
     def deliver(email) do
-      Mailman.deliver(email, config)
+      Mailman.deliver(email, config())
     end
 
     def config do
@@ -281,6 +292,7 @@ Pictures!
   end
 
   test "should load email parts from external file based on x_file_path" do
+    email_with_template_paths = email_with_template_paths()
     {:ok, message} = MyApp.ExternalTemplatesMailer.deliver(email_with_template_paths)
     email = Mailman.Email.parse! message
     assert email.html ==

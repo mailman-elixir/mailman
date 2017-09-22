@@ -10,17 +10,11 @@ defmodule Mailman do
     def compile_part(config, mode, email)
   end
 
-  @doc "Delivers given email and returns a Task"
-  def deliver(email, context) do
-    message = Mailman.Render.render(email, context.composer)
-    Adapter.deliver(Mailman.Context.get_config(context), email, message)
-  end
-
   @doc "Delivers given email to all addresses and returns a list of Tasks"
-  def deliver(email, context, :send_cc_and_bcc) do
+  def deliver(email, context, :send_cc_and_bcc, extra_headers) do
     bcc_list = email.bcc
     cleaned_email = %Mailman.Email{email | bcc: []}
-    message = Mailman.Render.render(cleaned_email, context.composer)
+    message = Mailman.Render.render(cleaned_email, context.composer, extra_headers)
 
     to_task = [Adapter.deliver(context.config, email, message)]
 
@@ -37,5 +31,19 @@ defmodule Mailman do
     end)
 
     to_task ++ cc_tasks ++ bcc_tasks
+  end
+
+  def deliver(email, context, :send_cc_and_bcc) do
+    deliver(email, context, :send_cc_and_bcc, [])
+  end
+
+  @doc "Delivers given email and returns a Task"
+  def deliver(email, context, extra_headers) do
+    message = Mailman.Render.render(email, context.composer, extra_headers)
+    Adapter.deliver(Mailman.Context.get_config(context), email, message)
+  end
+
+  def deliver(email, context) do
+    deliver(email, context, [])
   end
 end

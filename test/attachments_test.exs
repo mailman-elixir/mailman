@@ -6,15 +6,22 @@ defmodule AttachmentsTest do
     assert is_map(attachment)
   end
 
-  test "#inline returns { :error, message } when file exists" do
+  test "#inline returns {:error, message} when file doesn't exist" do
     file_path = "test/data/idontexist.png"
-    { :error, _ } = Mailman.Attachment.inline(file_path)
+    {:error, _} = Mailman.Attachment.inline(file_path)
   end
 
 
   test "Attachment with a different disposition filename" do
-    { :ok, attachment } = Mailman.Attachment.inline("test/data/blank.png", "another_name.png")
+    {:ok, attachment} = Mailman.Attachment.inline("test/data/blank.png", "another_name.png")
     assert attachment.file_name == "another_name.png"
+    assert is_map(attachment)
+  end
+
+  test "Attachment with a manually set mime type" do
+    {:ok, attachment} = Mailman.Attachment.attach("test/data/blank.png", nil, {"image", "gif"})
+    assert attachment.mime_type == "image"
+    assert attachment.mime_sub_type == "gif"
     assert is_map(attachment)
   end
 
@@ -22,27 +29,11 @@ defmodule AttachmentsTest do
     assert Enum.count(Mailman.Attachment.mime_types) == 648
   end
 
-  test "#mime_type_for_path returns proper type" do
-    assert Mailman.Attachment.mime_full_for_path("image.gif") == "image/gif"
-    assert Mailman.Attachment.mime_full_for_path("image.png") == "image/png"
-    assert Mailman.Attachment.mime_full_for_path("invoice.pdf") == "application/pdf"
-    assert Mailman.Attachment.mime_full_for_path("file.strange") == "application/octet-stream"
-    assert Mailman.Attachment.mime_full_for_path("settings.mobileconfig") == "application/x-apple-aspen-config"
-  end
-
-  test "#mime_type_for_path returns proper values" do
-    assert Mailman.Attachment.mime_type_for_path("image.gif") == "image"
-    assert Mailman.Attachment.mime_type_for_path("image.png") == "image"
-    assert Mailman.Attachment.mime_type_for_path("invoice.pdf") == "application"
-    assert Mailman.Attachment.mime_type_for_path("file.strange") == "application"
-    assert Mailman.Attachment.mime_type_for_path("settings.mobileconfig") == "application"
-  end
-
-  test "#mime_subtype_for_path returns proepr values" do
-    assert Mailman.Attachment.mime_sub_type_for_path("image.gif") == "gif"
-    assert Mailman.Attachment.mime_sub_type_for_path("image.png") == "png"
-    assert Mailman.Attachment.mime_sub_type_for_path("invoice.pdf") == "pdf"
-    assert Mailman.Attachment.mime_sub_type_for_path("file.strange") == "octet-stream"
-    assert Mailman.Attachment.mime_sub_type_for_path("settings.mobileconfig") == "x-apple-aspen-config"
+  test "mime type getter returns proper type" do
+    assert Mailman.Attachment.mime_type_and_subtype_from_extension("image.gif") == {"image", "gif"}
+    assert Mailman.Attachment.mime_type_and_subtype_from_extension("image.png") == {"image", "png"}
+    assert Mailman.Attachment.mime_type_and_subtype_from_extension("invoice.pdf") == {"application", "pdf"}
+    assert Mailman.Attachment.mime_type_and_subtype_from_extension("file.strange") == {"application", "octet-stream"}
+    assert Mailman.Attachment.mime_type_and_subtype_from_extension("settings.mobileconfig") == {"application", "x-apple-aspen-config"}
   end
 end
