@@ -148,22 +148,6 @@ Mailman.LocalServer.start(1234)
 Mailman.TestServer.start
 ```
 
-To be able to send emails using an external SMTP server `SmtpConfig` can be used. Example:
-
-```elixir
-%Mailman.Context{
-  config: %Mailman.SmtpConfig{
-    relay: "yourtdomain.com",
-    username: "userkey-here",
-    password: "passkey-here",
-    port: 25,
-    tls: :always,
-    auth: :always,
-  },
-  # ...
-}
-```
-
 ### Configuration using Mix.Config
 
 You can pass context configuration to Mailman using `Mix.Config`. If you don't set a `config` field value in `Mailman.Context{}` struct, or if you set it to `nil`, Mailman expect to read the value from your `config.exs` file (or a file imported by it).

@@ -703,7 +703,7 @@ defmodule Mailman.Attachment do
           mime_type: mime_type,
           mime_sub_type: mime_subtype,
           data: data,
-          disposition: "inline"
+          disposition: disposition
         }}
       {:error, message} ->
           {:error, message}
