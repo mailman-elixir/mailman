@@ -25,6 +25,7 @@ defmodule Mailman.Mixfile do
       { :gen_smtp, "~> 0.12.0" },
       { :ex_doc, ">= 0.16.3", only: :dev },
       { :httpotion, "~> 3.0.0" },
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
     ]
   end
 
