@@ -21,7 +21,7 @@ defmodule Mailman.Mixfile do
   # Returns the list of dependencies in the format:
   defp deps do
     [
-      { :eiconv, github: "zotonic/eiconv" },
+      { :eiconv, "~> 1.0.0-alpha1" },
       { :gen_smtp, "~> 0.12.0" },
       { :ex_doc, ">= 0.16.3", only: :dev },
       { :httpotion, "~> 3.0.0" },
