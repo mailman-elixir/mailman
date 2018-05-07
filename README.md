@@ -266,23 +266,6 @@ Also, if you want to clear this list:
   Mailman.TestServer.clear_deliveries
 ```
 
-## Using with Hex
-
-There's one gotcha currently when using the package with Hex. Because of the dependency on the eiconv library and it's absence in the Hex database, you have to specify it as a dependency on your own in your mix.exs
-
-As an example:
-
-```elixir
-defp deps do
-  [
-    {:mailman, "~> 0.4.0"},
-    {:eiconv, github: "zotonic/eiconv"}
-  ]
-end
-```
-
-This way you'll be able to use the parse! function to parse delivered emails.
-
 ## TODOs
 
 - [ ] Send multiple emails using the same connection [gen_smtp PR](https://github.com/Vagabond/gen_smtp/pull/117)
