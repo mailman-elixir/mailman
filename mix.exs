@@ -9,7 +9,7 @@ defmodule Mailman.Mixfile do
       homepage_url: "https://github.com/kamilc/mailman",
       description: "Library providing a clean way of defining mailers in Elixir apps",
       package: package(),
-      version: "0.4.0",
+      version: "0.4.1",
       elixir: "~> 1.0",
       deps: deps()
     ]
@@ -24,10 +24,10 @@ defmodule Mailman.Mixfile do
   defp deps do
     [
       {:eiconv, "~> 1.0.0"},
-      {:gen_smtp, "~> 0.12.0"},
+      {:gen_smtp, "~> 0.13.0"},
       {:ex_doc, ">= 0.16.3", only: :dev},
-      {:httpotion, "~> 3.0.0"},
-      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
+      {:httpotion, "~> 3.1.0"},
+      {:credo, "~> 0.10", only: [:dev, :test], runtime: false}
     ]
   end
 
