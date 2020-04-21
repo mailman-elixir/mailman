@@ -1,6 +1,7 @@
 defmodule Mailman.SmtpConfig do
   @moduledoc "A config struct for external SMTP server adapter"
 
+  @derive {Inspect, except: [:password]}
   defstruct relay: "",
     username: "",
     password: "",
