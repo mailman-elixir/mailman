@@ -100,21 +100,21 @@ defmodule Mailman.Render do
   end
 
   def parameters_for({:attachment, _body, attachment}) do
-    [
-      {"transfer-encoding", "base64"},
-      {"content-type-params", []},
-      {"disposition", attachment.disposition},
-      {"disposition-params", [{"filename", attachment.file_name}]}
-    ]
+    %{
+      transfer_encoding: "base64",
+      content_type_params: [],
+      disposition: attachment.disposition,
+      disposition_params: [{"filename", attachment.file_name}]
+    }
   end
 
   def parameters_for(_part) do
-    [
-      {"transfer-encoding", "quoted-printable"},
-      {"content-type-params", []},
-      {"disposition", "inline"},
-      {"disposition-params", []}
-    ]
+    %{
+      transfer_encoding: "quoted-printable",
+      content_type_params: [],
+      disposition: "inline",
+      disposition_params: [],
+    }
   end
 
   def headers_for({:plain, _body}), do: []

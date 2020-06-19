@@ -47,5 +47,4 @@ defmodule Mailman.ConfigTest do
     Application.delete_env(:mailman, :adapter)
     Application.delete_env(:mailman, :some_config)
   end
-
 end
