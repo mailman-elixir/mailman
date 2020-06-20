@@ -17,7 +17,7 @@ defmodule Mailman.Mixfile do
 
   # Configuration for the OTP application
   def application do
-    [applications: [:ssl, :crypto, :eiconv, :gen_smtp, :httpotion]]
+    [applications: [:ssl, :crypto, :eiconv, :gen_smtp, :httpoison]]
   end
 
   # Note that :eiconv encoder/decoder is used by gen_smtp as well,
@@ -34,9 +34,10 @@ defmodule Mailman.Mixfile do
   defp deps do
     [
       {:eiconv, "~> 1.0.0"},
-      {:gen_smtp, "~> 0.15.0"},
+    # {:gen_smtp, "~> 0.15.0"},
+      {:gen_smtp, github: "gen-smtp/gen_smtp", override: true},
       {:ex_doc, ">= 0.19.1", only: :dev},
-      {:httpotion, "~> 3.1.0"},
+      {:httpoison, "~> 1.6"},
       {:credo, "~> 0.10", only: [:dev, :test], runtime: false}
     ]
   end

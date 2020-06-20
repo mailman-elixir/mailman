@@ -16,7 +16,7 @@ defmodule Mailman.Render do
       top_mime_type,
       top_mime_sub_type,
       headers_for(email) ++ extra_headers,
-      [],
+      %{},
       top_content_part
     }
   end
@@ -31,20 +31,20 @@ defmodule Mailman.Render do
       html_part_tuple
     else
       if is_nil(html_part_tuple), do: nil, else:
-        {"multipart", "related", [], [], [html_part_tuple | inline_attachment_part_tuples]}
+        {"multipart", "related", [], %{}, [html_part_tuple | inline_attachment_part_tuples]}
     end
 
     alternative_or_plain_tuple = if is_nil(related_or_html_part_tuple) do
       plain_part_tuple
     else
-      {"multipart", "alternative", [], [], [plain_part_tuple, related_or_html_part_tuple]}
+      {"multipart", "alternative", [], %{}, [plain_part_tuple, related_or_html_part_tuple]}
     end
 
     mixed_or_alternative_tuple = if Enum.empty?(attached_attachment_part_tuples) do
       alternative_or_plain_tuple
     else
       if is_nil(alternative_or_plain_tuple), do: nil, else:
-        {"multipart", "mixed", [], [], [alternative_or_plain_tuple | attached_attachment_part_tuples]}
+        {"multipart", "mixed", [], %{}, [alternative_or_plain_tuple | attached_attachment_part_tuples]}
     end
 
     mixed_or_alternative_tuple

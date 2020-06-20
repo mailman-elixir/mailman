@@ -6,6 +6,12 @@ defmodule AttachmentsTest do
     assert is_map(attachment)
   end
 
+  test "Attachment via HTTPoison works" do
+    {:ok, attachment} = Mailman.Attachment.inline("https://www.w3.org/")
+    assert is_map(attachment)
+  end
+
+
   test "#inline returns {:error, message} when file doesn't exist" do
     file_path = "test/data/idontexist.png"
     {:error, _} = Mailman.Attachment.inline(file_path)

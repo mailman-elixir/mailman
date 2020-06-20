@@ -666,17 +666,18 @@ defmodule Mailman.Attachment do
   ]
 
   defp get_attachment_data_via_http(url) do
-    case is_valid_url?(url) do
-      {:ok, _} ->
-        response = HTTPotion.get(url, timeout: 60_000)
-
+    if is_valid_url?(url) do
+      with {:ok, response} <- HTTPoison.get(url, recv_timeout: 60_000) do
         case response.status_code do
           200 -> {:ok, response.body}
           _ -> {:error, :invalid_http_response}
         end
-
-      {:error, message} ->
-        {:error, message}
+      else
+        {:error, message} ->
+          {:error, message}
+      end
+    else
+      {:error, :invalid_url}
     end
   end
 
@@ -749,14 +750,13 @@ defmodule Mailman.Attachment do
   def mime_type_and_subtype_from_extension(path) do
     extension = Path.extname(path)
 
-    type =
-      Enum.find(mime_types(), fn {ext, _} ->
-        ext == extension
-      end)
-
-    case type do
+    mime_types()
+    |> Enum.find(fn {ext, _} ->
+      ext == extension
+    end)
+    |> case do
       nil -> "application/octet-stream"
-      _ -> elem(type, 1)
+      {_ext, mimetype} -> mimetype
     end
     |> String.split("/")
     |> List.to_tuple()

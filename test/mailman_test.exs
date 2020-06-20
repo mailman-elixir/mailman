@@ -120,7 +120,7 @@ defmodule MailmanTest do
     assert bcc_email.bcc |> length == 1
   end
 
-  test "encodes attachements properly" do
+  test "encodes attachments properly" do
     email_with_attachments = email_with_attachments()
     {:ok, message} = MyApp.Mailer.deliver(email_with_attachments)
     email = Mailman.Email.parse!(message)
