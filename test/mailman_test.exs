@@ -89,6 +89,15 @@ defmodule MailmanTest do
     {:ok, _} = Mailman.Email.parse(message)
   end
 
+  test "parsing sent emails works" do
+    {:ok, message} = MyApp.Mailer.deliver(testing_email())
+    {:ok, parsed_email} = Mailman.Email.parse(message)
+
+    IO.inspect("PARSED EMAIL IS #{inspect parsed_email}")
+
+    assert true
+  end
+
   test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do
     assert MyApp.Mailer.deliver(testing_email(), :send_cc_and_bcc) |> is_list == true
 
