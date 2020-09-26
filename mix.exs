@@ -34,8 +34,7 @@ defmodule Mailman.Mixfile do
   defp deps do
     [
       {:eiconv, "~> 1.0.0"},
-    # {:gen_smtp, "~> 0.15.0"},
-      {:gen_smtp, github: "gen-smtp/gen_smtp", override: true},
+      {:gen_smtp, "~> 0.15.0"},
       {:ex_doc, ">= 0.19.1", only: :dev},
       {:httpoison, "~> 1.6"},
       {:credo, "~> 0.10", only: [:dev, :test], runtime: false}
