@@ -11,7 +11,7 @@ defmodule Mailman.Mixfile do
       package: package(),
       version: "0.4.2",
       elixir: "~> 1.0",
-      deps: deps()
+      deps: deps(),
     ]
   end
 
