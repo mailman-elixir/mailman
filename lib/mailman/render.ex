@@ -130,7 +130,7 @@ defmodule Mailman.Render do
       { "From", email.from },
       { "To", email.to |> normalize_addresses |> Enum.join(",") },
       { "Subject", email.subject },
-      { "reply-to", email.reply_to },
+      { "Reply-To", email.reply_to },
       { "Cc",  email.cc |> as_list |> normalize_addresses |> Enum.join(", ") |> as_list },
       { "Bcc", email.bcc |> as_list |> normalize_addresses |> Enum.join(", ") |> as_list }
     ] |> Enum.filter(fn(i) -> elem(i, 1) != [] end)

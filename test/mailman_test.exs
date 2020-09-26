@@ -93,7 +93,8 @@ defmodule MailmanTest do
     {:ok, message} = MyApp.Mailer.deliver(testing_email())
     {:ok, parsed_email} = Mailman.Email.parse(message)
 
-    IO.inspect("PARSED EMAIL IS #{inspect parsed_email}")
+    # Un-comment this to investigate problems with parsing
+    # IO.inspect(parsed_email)
 
     assert true
   end
@@ -334,5 +335,28 @@ defmodule MailmanTest do
                "test/templates/#{email_with_template_paths.text}",
                email_with_template_paths.data
              )
+  end
+
+  def email_with_unicode_in_header do
+    %Mailman.Email{
+      subject: "Hello Mailman!",
+      from: "Some Emoji – 👍 <mailman@elixir.com>",
+      reply_to: "Some more Emoji – 🔥 <reply@example.com>",
+      to: ["Another Emoji – 💕 <ciemniewski.kamil@gmail.com>"],
+      cc: ["Another Emoji! – 🎁 <testy2#tester1234.com>", "abcd@defd.com"],
+      bcc: ["Yet another emoji! – 🌹 <1234@wsd.com>", "Just ASCII <test@example.com>"],
+      text: "Yo, here's one more emoji: 🆕",
+      html: "<div>Yo, here's one more emoji: 🆕</div>",
+    }
+  end
+
+  test "should encode email parts properly" do
+    email_with_unicode_in_header = email_with_unicode_in_header()
+    rendered_email = Mailman.Render.render(email_with_unicode_in_header, %Mailman.EexComposeConfig{})
+
+    # Un-comment this to investigate problems with header encodings
+    # IO.inspect(rendered_email)
+
+    assert true
   end
 end

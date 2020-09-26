@@ -11,7 +11,7 @@ defmodule Mailman.Parsing do
       subject: get_header(raw, "Subject") || "",
       from: get_header(raw, "From") || "",
       to: get_header(raw, "To") || "",
-      reply_to: get_header(raw, "reply-to") || "",
+      reply_to: get_header(raw, "Reply-To") || "",
       cc: get_header(raw, "Cc") || "",
       bcc: get_header(raw, "Bcc") || "",
       attachments: get_attachments(raw),
