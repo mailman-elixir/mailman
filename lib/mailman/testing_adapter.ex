@@ -3,9 +3,9 @@ defmodule Mailman.TestingAdapter do
 
   def deliver(config, _email, message) do
     if config.store_deliveries do
-      Mailman.TestServer.register_delivery message
+      Mailman.TestServer.register_delivery(message)
     end
-    { :ok, message }
-  end
 
+    {:ok, message}
+  end
 end

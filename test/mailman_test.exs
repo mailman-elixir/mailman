@@ -100,10 +100,10 @@ defmodule MailmanTest do
   end
 
   test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do
-    assert MyApp.Mailer.deliver(testing_email(), :send_cc_and_bcc) |> is_list == true
+    delivery_results = testing_email() |> MyApp.Mailer.deliver(:send_cc_and_bcc)
 
-    assert MyApp.Mailer.deliver(testing_email(), :send_cc_and_bcc) |> List.first() |> is_tuple ==
-             true
+    assert delivery_results |> is_list
+    assert delivery_results |> List.first() |> is_tuple
   end
 
   test "#deliver/2 sends emails to all address in CC and BCC list" do
@@ -161,7 +161,8 @@ defmodule MailmanTest do
     {:ok, attachment} = "test/data/blank.png" |> Path.expand() |> File.read()
 
     {:ok, email} =
-      Mailman.Render.render(email_with_attachments, %Mailman.EexComposeConfig{})
+      email_with_attachments
+      |> Mailman.Render.render(%Mailman.EexComposeConfig{})
       |> Mailman.Parsing.parse()
 
     assert attachment == email.attachments |> hd |> Map.get(:data)
@@ -346,13 +347,15 @@ defmodule MailmanTest do
       cc: ["Another Emoji! – 🎁 <testy2#tester1234.com>", "abcd@defd.com"],
       bcc: ["Yet another emoji! – 🌹 <1234@wsd.com>", "Just ASCII <test@example.com>"],
       text: "Yo, here's one more emoji: 🆕",
-      html: "<div>Yo, here's one more emoji: 🆕</div>",
+      html: "<div>Yo, here's one more emoji: 🆕</div>"
     }
   end
 
   test "should encode email parts properly" do
     email_with_unicode_in_header = email_with_unicode_in_header()
-    rendered_email = Mailman.Render.render(email_with_unicode_in_header, %Mailman.EexComposeConfig{})
+
+    rendered_email =
+      Mailman.Render.render(email_with_unicode_in_header, %Mailman.EexComposeConfig{})
 
     # Un-comment this to investigate problems with header encodings
     # IO.inspect(rendered_email)

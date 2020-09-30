@@ -2,7 +2,7 @@ defmodule Mailman.Header do
   @moduledoc "Represents a Mime-Mail header"
 
   defstruct name: "",
-    value: ""
+            value: ""
 
   def from_raw(raw) when is_tuple(raw) do
     %Mailman.Header{
@@ -14,7 +14,7 @@ defmodule Mailman.Header do
   def process_value(name, value) do
     case name do
       'To' -> String.split(value, ",")
-      _    -> value
+      _ -> value
     end
   end
 end

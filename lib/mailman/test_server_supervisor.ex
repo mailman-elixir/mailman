@@ -1,4 +1,5 @@
 defmodule Mailman.TestServerSupervisor do
+  @moduledoc "Starts a test server"
   use Supervisor
 
   def start_link do

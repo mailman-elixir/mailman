@@ -1,11 +1,10 @@
 defmodule Mailman.Parsing do
   @moduledoc "Functions for parsin mail messages into Elixir structs"
 
+  @doc "Parses given mime mail and returns Email"
   def parse(message) when is_binary(message) do
     {:ok, parse(:mimemail.decode(message))}
   end
-
-  @doc "Parses given mime mail and returns Email"
   def parse(raw) do
     %Mailman.Email{
       subject: get_header(raw, "Subject") || "",
@@ -38,12 +37,10 @@ defmodule Mailman.Parsing do
     if header != nil do
       value = elem(header, 1)
 
-      cond do
-        name == "To" || name == "Cc" || name == "Bcc" ->
-          String.split(value, ",") |> Enum.map(&String.trim(&1))
-
-        true ->
-          value
+      if name == "To" || name == "Cc" || name == "Bcc" do
+        value |> String.split(",") |> Enum.map(&String.trim(&1))
+      else
+        value
       end
     else
       if name == "To" || name == "Cc" || name == "Bcc" do
@@ -55,7 +52,7 @@ defmodule Mailman.Parsing do
   end
 
   def get_headers({_mime_type, _mime_subtype, headers, _parameters, _content}) do
-      headers
+    headers
   end
 
   def filename_from_raw(raw_part) do
@@ -109,14 +106,19 @@ defmodule Mailman.Parsing do
     }
   end
 
+
+
   def content_parts(raw) when is_tuple(raw) do
     body = get_raw_body(raw)
 
-    cond do
-      is_binary(body) -> [raw]
-      is_list(body) -> Enum.map(body, &content_parts(&1))
-    end
-    |> List.flatten()
+    parts_from_body =
+      cond do
+        is_binary(body) -> [raw]
+        is_list(body) -> Enum.map(body, &content_parts(&1))
+        true -> []
+      end
+
+    List.flatten(parts_from_body)
   end
 
   def get_type(raw) when is_tuple(raw) do

@@ -95,7 +95,7 @@
 
         {Credo.Check.Refactor.DoubleBooleanNegation},
         {Credo.Check.Refactor.CondStatements},
-        {Credo.Check.Refactor.CyclomaticComplexity},
+        {Credo.Check.Refactor.CyclomaticComplexity, max_complexity: 10},
         {Credo.Check.Refactor.FunctionArity},
         {Credo.Check.Refactor.LongQuoteBlocks},
         {Credo.Check.Refactor.MatchInCondition},
@@ -108,7 +108,6 @@
         {Credo.Check.Warning.BoolOperationOnSameValues},
         {Credo.Check.Warning.IExPry},
         {Credo.Check.Warning.IoInspect},
-        {Credo.Check.Warning.LazyLogging},
         {Credo.Check.Warning.OperationOnSameValues},
         {Credo.Check.Warning.OperationWithConstantResult},
         {Credo.Check.Warning.UnusedEnumOperation},
@@ -132,10 +131,6 @@
         # Deprecated checks (these will be deleted after a grace period)
         #
         {Credo.Check.Readability.Specs, false},
-        {Credo.Check.Warning.NameRedeclarationByAssignment, false},
-        {Credo.Check.Warning.NameRedeclarationByCase, false},
-        {Credo.Check.Warning.NameRedeclarationByDef, false},
-        {Credo.Check.Warning.NameRedeclarationByFn, false},
 
         # Custom checks can be created using `mix credo.gen.check`.
         #
