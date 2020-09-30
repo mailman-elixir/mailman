@@ -90,10 +90,10 @@ defmodule MailmanTest do
   end
 
   test "parsing sent emails works" do
-    {:ok, message} = MyApp.Mailer.deliver(testing_email())
-    {:ok, parsed_email} = Mailman.Email.parse(message)
-
     # Un-comment this to investigate problems with parsing
+    #
+    # {:ok, message} = MyApp.Mailer.deliver(testing_email())
+    # {:ok, parsed_email} = Mailman.Email.parse(message)
     # IO.inspect(parsed_email)
 
     assert true
@@ -175,7 +175,7 @@ defmodule MailmanTest do
       ])
 
     # Just check whether it contains it for now
-    rendered_email =~ "X-Test-Header: 123"
+    assert rendered_email =~ "X-Test-Header: 123"
   end
 
   def assert_same_attachments(email1, email2) do
@@ -352,12 +352,11 @@ defmodule MailmanTest do
   end
 
   test "should encode email parts properly" do
-    email_with_unicode_in_header = email_with_unicode_in_header()
-
-    rendered_email =
-      Mailman.Render.render(email_with_unicode_in_header, %Mailman.EexComposeConfig{})
-
     # Un-comment this to investigate problems with header encodings
+    #
+    # email_with_unicode_in_header = email_with_unicode_in_header()
+    # rendered_email =
+    #   Mailman.Render.render(email_with_unicode_in_header, %Mailman.EexComposeConfig{})
     # IO.inspect(rendered_email)
 
     assert true
