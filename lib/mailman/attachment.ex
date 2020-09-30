@@ -667,12 +667,12 @@ defmodule Mailman.Attachment do
 
   defp get_attachment_data_via_http(url) do
     if is_valid_url?(url) do
-      with {:ok, response} <- HTTPoison.get(url, recv_timeout: 60_000) do
-        case response.status_code do
-          200 -> {:ok, response.body}
-          _ -> {:error, :invalid_http_response}
-        end
-      else
+      case HTTPoison.get(url, recv_timeout: 60_000) do
+        {:ok, response} ->
+            case response.status_code do
+            200 -> {:ok, response.body}
+            _ -> {:error, :invalid_http_response}
+            end
         {:error, message} ->
           {:error, message}
       end
