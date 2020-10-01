@@ -1,4 +1,4 @@
-## Mailman 👮
+# Mailman 👮
 
 ![Elixir CI](https://github.com/mailman-elixir/mailman/workflows/Elixir%20CI/badge.svg)
 [![Docs](https://img.shields.io/badge/api-docs-green.svg?style=flat)](https://hexdocs.pm/mailman)
@@ -18,9 +18,40 @@ Mailman lets you send email from your Elixir app.
 
 Mailman is a wrapper around the mighty (but rather low-level) [gen_smtp](https://github.com/vagabond/gen_smtp), the popular Erlang SMTP library.
 
-## TODOs
 
-- [ ] Send multiple emails using the same connection [gen_smtp PR](https://github.com/Vagabond/gen_smtp/pull/117)
-- [ ] Throttling/rate limiting of email deliveries
+## Simple example 
 
+```elixir
+context = %Mailman.Context{
+  config: %Mailman.SmtpConfig{
+      relay: "yourtdomain.com",
+      username: "userkey-here",
+      password: "passkey-here",
+      port: 25,
+      tls: :always,
+      auth: :always,
+  },
+  composer: %Mailman.EexComposeConfig{}
+}
 
+email = %Mailman.Email{
+  subject: "Hello Mailman!",
+  from: "mailman@elixir.com",
+  to: ["test1@tester123456.com"],
+  cc: ["test2@tester1234.com", "abcd@defd.com"],
+  bcc: ["1234@wsd.com"],
+  data: [
+    name: "Yo"
+  ],
+  text: "Hello! <%= name %> These are Unicode: qżźół",
+  html: """
+<html>
+<body>
+ <b>Hello! <%= name %></b> These are Unicode: qżźół
+</body>
+</html>
+"""
+}
+
+Mailman.deliver(email, context)
+```
