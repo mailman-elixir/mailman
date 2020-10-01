@@ -12,6 +12,7 @@ defmodule Mailman.Mixfile do
       version: "0.4.3",
       elixir: "~> 1.0",
       deps: deps(),
+      docs: docs(),
     ]
   end
 
@@ -38,6 +39,23 @@ defmodule Mailman.Mixfile do
       {:ex_doc, ">= 0.19.1", only: :dev},
       {:httpoison, "~> 1.6"},
       {:credo, "~> 1.5.0-rc.2", only: [:dev, :test], runtime: false}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "overview",
+      formatter_opts: [gfm: true],
+      source_url: "https://github.com/mailman-elixir/mailman",
+      extras: [
+        "docs/Overview.md",
+        "docs/Email.md",
+        "docs/Rendering.md",
+        "docs/SmtpAdapter.md",
+        "docs/LocalTestAdapters.md",
+        "docs/MixConfig.md",
+        "docs/Delivery.md",
+      ]
     ]
   end
 
