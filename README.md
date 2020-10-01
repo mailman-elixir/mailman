@@ -1,8 +1,8 @@
 ## Mailman 👮
 
-[![Build Status](https://travis-ci.org/mailman-elixir/mint.svg?branch=master)](https://travis-ci.org/elixir-mint/mint)
+![Elixir CI](https://github.com/mailman-elixir/mailman/workflows/Elixir%20CI/badge.svg)
 [![Docs](https://img.shields.io/badge/api-docs-green.svg?style=flat)](https://hexdocs.pm/mailman)
-[![Hex.pm Version](http://img.shields.io/hexpm/v/mint.svg?style=flat)](https://hex.pm/packages/mailman)
+[![Hex.pm Version](http://img.shields.io/hexpm/v/mailman.svg?style=flat)](https://hex.pm/packages/mailman)
 
 Mailman lets you send email from your Elixir app.
 
