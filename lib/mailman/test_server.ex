@@ -1,7 +1,11 @@
 defmodule Mailman.TestServer do
-  @moduledoc "Implementation of the testing SMTP server"
+  @moduledoc """
+  Implementation of the testing SMTP server.
+  The GenServer state is just a single list of "deliveries" that can be pushed to,
+  cleared, and queried.
+  """
 
-  use GenServer
+  use GenServer, restart: :transient
   require Logger
 
   @doc """
@@ -29,7 +33,7 @@ defmodule Mailman.TestServer do
     Mailman.TestServerSupervisor.start_link
   end
 
-  def start_link(initial_state, parent_pid) do
+  def start_link({initial_state, parent_pid}) do
     GenServer.start_link(__MODULE__, {initial_state, parent_pid}, [])
   end
 

@@ -12,9 +12,9 @@ defmodule MailmanTest do
 
     def config do
       %Mailman.Context{
-          config:   %Mailman.TestConfig{},
-          composer: %Mailman.EexComposeConfig{}
-        }
+        config: %Mailman.TestConfig{},
+        composer: %Mailman.EexComposeConfig{}
+      }
     end
   end
 
@@ -23,21 +23,21 @@ defmodule MailmanTest do
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
-      to: [ "ciemniewski.kamil@gmail.com" ],
-      cc: [ "testy2#tester1234.com", "abcd@defd.com" ],
-      bcc: [ "1234@wsd.com" ],
+      to: ["ciemniewski.kamil@gmail.com"],
+      cc: ["testy2#tester1234.com", "abcd@defd.com"],
+      bcc: ["1234@wsd.com"],
       data: [
         name: "Yo"
-        ],
+      ],
       text: "Hello! <%= name %> These are Unicode: qżźół",
       html: """
-<html>
-<body>
- <b>Hello! <%= name %></b> These are Unicode: qżźół
-</body>
-</html>
+      <html>
+      <body>
+      <b>Hello! <%= name %></b> These are Unicode: qżźół
+      </body>
+      </html>
       """
-      }
+    }
   end
 
   def cc_and_bcc_testing_email do
@@ -45,21 +45,21 @@ defmodule MailmanTest do
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
-      to: [ "ciemniewski.kamil@gmail.com" ],
-      cc: [ "abcd@defd.com" ],
-      bcc: [ "1234@wsd.com", "5678@wsd.com" ],
+      to: ["ciemniewski.kamil@gmail.com"],
+      cc: ["abcd@defd.com"],
+      bcc: ["1234@wsd.com", "5678@wsd.com"],
       data: [
         name: "Yo"
-        ],
+      ],
       text: "Hello! <%= name %> These are Unicode: qżźół",
       html: """
-<html>
-<body>
- <b>Hello! <%= name %></b> These are Unicode: qżźół
-</body>
-</html>
+      <html>
+      <body>
+      <b>Hello! <%= name %></b> These are Unicode: qżźół
+      </body>
+      </html>
       """
-      }
+    }
   end
 
   def email_with_attachments do
@@ -67,7 +67,7 @@ defmodule MailmanTest do
       subject: "Pictures!",
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
-      to: [ "ciemniewski.kamil@gmail.com", "kamil@endpoint.com" ],
+      to: ["ciemniewski.kamil@gmail.com", "kamil@endpoint.com"],
       cc: [],
       bcc: [],
       attachments: [
@@ -75,13 +75,13 @@ defmodule MailmanTest do
       ],
       text: "Pictures!",
       html: """
-<html>
-<body>
-Pictures!
-</body>
-</html>
+      <html>
+      <body>
+      Pictures!
+      </body>
+      </html>
       """
-      }
+    }
   end
 
   test "sending testing emails works" do
@@ -89,84 +89,109 @@ Pictures!
     {:ok, _} = Mailman.Email.parse(message)
   end
 
-  test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do 
-    assert MyApp.Mailer.deliver(testing_email(), :send_cc_and_bcc) |> is_list == true
-    assert MyApp.Mailer.deliver(testing_email(), :send_cc_and_bcc) |> List.first |> is_tuple == true
+  test "parsing sent emails works" do
+    # Un-comment this to investigate problems with parsing
+    #
+    # {:ok, message} = MyApp.Mailer.deliver(testing_email())
+    # {:ok, parsed_email} = Mailman.Email.parse(message)
+    # IO.inspect(parsed_email)
+
+    assert true
+  end
+
+  test "#deliver/2 returns list of Tasks if it includes :send_cc_and_bcc atom" do
+    delivery_results = testing_email() |> MyApp.Mailer.deliver(:send_cc_and_bcc)
+
+    assert delivery_results |> is_list
+    assert delivery_results |> List.first() |> is_tuple
   end
 
   test "#deliver/2 sends emails to all address in CC and BCC list" do
     cc_and_bcc_testing_email = cc_and_bcc_testing_email()
-    Mailman.TestServer.clear_deliveries
+    Mailman.TestServer.clear_deliveries()
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
-    assert (Mailman.TestServer.deliveries |> Enum.count) == 4
+    assert Mailman.TestServer.deliveries() |> Enum.count() == 4
   end
 
   test "#deliver/2 redactes the BCC email from the TO message" do
     cc_and_bcc_testing_email = cc_and_bcc_testing_email()
-    Mailman.TestServer.clear_deliveries
+    Mailman.TestServer.clear_deliveries()
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
-    to_email = Mailman.TestServer.deliveries |> List.last |> Mailman.Email.parse!
+    to_email = Mailman.TestServer.deliveries() |> List.last() |> Mailman.Email.parse!()
     assert to_email.bcc == []
   end
 
   test "#deliver/2 adds the BCC email to a BCC receiver" do
     cc_and_bcc_testing_email = cc_and_bcc_testing_email()
-    Mailman.TestServer.clear_deliveries
+    Mailman.TestServer.clear_deliveries()
     MyApp.Mailer.deliver(cc_and_bcc_testing_email, :send_cc_and_bcc)
-    bcc_email = Mailman.TestServer.deliveries |> List.first |> Mailman.Email.parse!
+    bcc_email = Mailman.TestServer.deliveries() |> List.first() |> Mailman.Email.parse!()
     assert bcc_email.to == Mailman.Render.normalize_addresses(cc_and_bcc_testing_email.to)
     assert bcc_email.bcc |> length == 1
   end
 
-  test "encodes attachements properly" do
+  test "encodes attachments properly" do
     email_with_attachments = email_with_attachments()
     {:ok, message} = MyApp.Mailer.deliver(email_with_attachments)
-    email = Mailman.Email.parse! message
+    email = Mailman.Email.parse!(message)
     assert email.from == email_with_attachments.from
     assert email.reply_to == email_with_attachments.reply_to
-    assert email.to   == Mailman.Render.normalize_addresses(email_with_attachments.to)
-    assert email.subject   == email_with_attachments.subject
-    assert email.cc   == Mailman.Render.normalize_addresses(email_with_attachments.cc)
-    assert email.bcc   == Mailman.Render.normalize_addresses(email_with_attachments.bcc)
-    assert email.text   == email_with_attachments.text
-    assert email.html   == email_with_attachments.html
-    assert_same_attachments email, email_with_attachments
+    assert email.to == Mailman.Render.normalize_addresses(email_with_attachments.to)
+    assert email.subject == email_with_attachments.subject
+    assert email.cc == Mailman.Render.normalize_addresses(email_with_attachments.cc)
+    assert email.bcc == Mailman.Render.normalize_addresses(email_with_attachments.bcc)
+    assert email.text == email_with_attachments.text
+    assert email.html == email_with_attachments.html
+    assert_same_attachments(email, email_with_attachments)
   end
 
   test "the message sent queue contains the latest sent messages" do
     email_with_attachments = email_with_attachments()
-    Mailman.TestServer.clear_deliveries
-    { :ok, _ } = MyApp.Mailer.deliver(email_with_attachments)
-    assert (Mailman.TestServer.deliveries |> Enum.count) == 1
-    { :ok, _ } = MyApp.Mailer.deliver(testing_email())
-    assert (Mailman.TestServer.deliveries |> Enum.count) == 2
-    Mailman.TestServer.clear_deliveries
-    assert (Mailman.TestServer.deliveries |> Enum.count) == 0
+    Mailman.TestServer.clear_deliveries()
+    {:ok, _} = MyApp.Mailer.deliver(email_with_attachments)
+    assert Mailman.TestServer.deliveries() |> Enum.count() == 1
+    {:ok, _} = MyApp.Mailer.deliver(testing_email())
+    assert Mailman.TestServer.deliveries() |> Enum.count() == 2
+    Mailman.TestServer.clear_deliveries()
+    assert Mailman.TestServer.deliveries() |> Enum.count() == 0
   end
 
   test "Ensure attachments are encoded and decoded properly" do
     email_with_attachments = email_with_attachments()
-    {:ok, attachment} = "test/data/blank.png" |> Path.expand |> File.read
-    {:ok, email} = Mailman.Render.render(email_with_attachments, %Mailman.EexComposeConfig{}) |> Mailman.Parsing.parse
+    {:ok, attachment} = "test/data/blank.png" |> Path.expand() |> File.read()
+
+    {:ok, email} =
+      email_with_attachments
+      |> Mailman.Render.render(%Mailman.EexComposeConfig{})
+      |> Mailman.Parsing.parse()
+
     assert attachment == email.attachments |> hd |> Map.get(:data)
   end
 
   test "Render with extra email headers" do
-    rendered_email = Mailman.Render.render(testing_email(), %Mailman.EexComposeConfig{}, [{"X-Test-Header", "123"}])
-    rendered_email =~ "X-Test-Header: 123"  # Just check whether it contains it for now
+    rendered_email =
+      Mailman.Render.render(testing_email(), %Mailman.EexComposeConfig{}, [
+        {"X-Test-Header", "123"}
+      ])
+
+    # Just check whether it contains it for now
+    assert rendered_email =~ "X-Test-Header: 123"
   end
 
   def assert_same_attachments(email1, email2) do
     assert Enum.count(email1.attachments) == Enum.count(email2.attachments)
-    Enum.each email1.attachments, fn(attachment) ->
-      found = Enum.find email2.attachments, fn(a) ->
-        a.data == attachment.data &&
-          a.mime_type == attachment.mime_type &&
-          a.mime_sub_type == attachment.mime_sub_type
-      end
+
+    Enum.each(email1.attachments, fn attachment ->
+      found =
+        Enum.find(email2.attachments, fn a ->
+          a.data == attachment.data &&
+            a.mime_type == attachment.mime_type &&
+            a.mime_sub_type == attachment.mime_sub_type
+        end)
+
       assert found != nil
       assert found.file_name == Path.basename(found.file_name)
-    end
+    end)
   end
 
   defmodule MyApp.ExternalTextMailer do
@@ -176,11 +201,11 @@ Pictures!
 
     def config do
       %Mailman.Context{
-          config:   %Mailman.TestConfig{},
-          composer: %Mailman.EexComposeConfig{
-            text_file: true
-          }
+        config: %Mailman.TestConfig{},
+        composer: %Mailman.EexComposeConfig{
+          text_file: true
         }
+      }
     end
   end
 
@@ -189,31 +214,33 @@ Pictures!
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
-      to: [ "ciemniewski.kamil@gmail.com" ],
-      cc: [ "testy2#tester1234.com", "abcd@defd.com" ],
-      bcc: [ "1234@wsd.com" ],
+      to: ["ciemniewski.kamil@gmail.com"],
+      cc: ["testy2#tester1234.com", "abcd@defd.com"],
+      bcc: ["1234@wsd.com"],
       data: [
         name: "Yo"
-        ],
+      ],
       text: "test/templates/email.txt.eex",
       html: """
-<html>
-<body>
- <b>Hello! <%= name %></b> These are Unicode: qżźół
-</body>
-</html>
+      <html>
+      <body>
+      <b>Hello! <%= name %></b> These are Unicode: qżźół
+      </body>
+      </html>
       """
-      }
+    }
   end
 
   test "should load text part of email from external file" do
     email_with_external_text = email_with_external_text()
-    {:ok, message} = MyApp.ExternalTextMailer.deliver(
-      email_with_external_text)
-    email = Mailman.Email.parse! message
+    {:ok, message} = MyApp.ExternalTextMailer.deliver(email_with_external_text)
+    email = Mailman.Email.parse!(message)
+
     assert email.text ==
-           EEx.eval_file(email_with_external_text.text,
-                         email_with_external_text.data)
+             EEx.eval_file(
+               email_with_external_text.text,
+               email_with_external_text.data
+             )
   end
 
   defmodule MyApp.ExternalHTMLMailer do
@@ -223,11 +250,11 @@ Pictures!
 
     def config do
       %Mailman.Context{
-          config:   %Mailman.TestConfig{},
-          composer: %Mailman.EexComposeConfig{
-            html_file: true
-          }
+        config: %Mailman.TestConfig{},
+        composer: %Mailman.EexComposeConfig{
+          html_file: true
         }
+      }
     end
   end
 
@@ -236,25 +263,27 @@ Pictures!
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
-      to: [ "ciemniewski.kamil@gmail.com" ],
-      cc: [ "testy2#tester1234.com", "abcd@defd.com" ],
-      bcc: [ "1234@wsd.com" ],
+      to: ["ciemniewski.kamil@gmail.com"],
+      cc: ["testy2#tester1234.com", "abcd@defd.com"],
+      bcc: ["1234@wsd.com"],
       data: [
         name: "Yo"
-        ],
+      ],
       text: "Hello! <%= name %> These are Unicode: qżźół",
       html: "test/templates/email.html.eex"
-      }
+    }
   end
 
   test "should load html part of email from external file" do
     email_with_external_html = email_with_external_html()
-    {:ok, message} = MyApp.ExternalHTMLMailer.deliver(
-      email_with_external_html)
-    email = Mailman.Email.parse! message
+    {:ok, message} = MyApp.ExternalHTMLMailer.deliver(email_with_external_html)
+    email = Mailman.Email.parse!(message)
+
     assert email.html ==
-           EEx.eval_file(email_with_external_html.html,
-                         email_with_external_html.data)
+             EEx.eval_file(
+               email_with_external_html.html,
+               email_with_external_html.data
+             )
   end
 
   defmodule MyApp.ExternalTemplatesMailer do
@@ -264,14 +293,14 @@ Pictures!
 
     def config do
       %Mailman.Context{
-          config:   %Mailman.TestConfig{},
-          composer: %Mailman.EexComposeConfig{
-            html_file: true,
-            text_file: true,
-            html_file_path: "test/templates/",
-            text_file_path: "test/templates/"
-          }
+        config: %Mailman.TestConfig{},
+        composer: %Mailman.EexComposeConfig{
+          html_file: true,
+          text_file: true,
+          html_file_path: "test/templates/",
+          text_file_path: "test/templates/"
         }
+      }
     end
   end
 
@@ -280,26 +309,56 @@ Pictures!
       subject: "Hello Mailman!",
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
-      to: [ "ciemniewski.kamil@gmail.com" ],
-      cc: [ "testy2#tester1234.com", "abcd@defd.com" ],
-      bcc: [ "1234@wsd.com" ],
+      to: ["ciemniewski.kamil@gmail.com"],
+      cc: ["testy2#tester1234.com", "abcd@defd.com"],
+      bcc: ["1234@wsd.com"],
       data: [
         name: "Yo"
-        ],
+      ],
       text: "email.txt.eex",
       html: "email.html.eex"
-      }
+    }
   end
 
   test "should load email parts from external file based on x_file_path" do
     email_with_template_paths = email_with_template_paths()
     {:ok, message} = MyApp.ExternalTemplatesMailer.deliver(email_with_template_paths)
-    email = Mailman.Email.parse! message
+    email = Mailman.Email.parse!(message)
+
     assert email.html ==
-           EEx.eval_file("test/templates/#{email_with_template_paths.html}",
-                         email_with_template_paths.data)
+             EEx.eval_file(
+               "test/templates/#{email_with_template_paths.html}",
+               email_with_template_paths.data
+             )
+
     assert email.text ==
-           EEx.eval_file("test/templates/#{email_with_template_paths.text}",
-                         email_with_template_paths.data)
+             EEx.eval_file(
+               "test/templates/#{email_with_template_paths.text}",
+               email_with_template_paths.data
+             )
+  end
+
+  def email_with_unicode_in_header do
+    %Mailman.Email{
+      subject: "Hello Mailman!",
+      from: "Some Emoji – 👍 <mailman@elixir.com>",
+      reply_to: "Some more Emoji – 🔥 <reply@example.com>",
+      to: ["Another Emoji – 💕 <ciemniewski.kamil@gmail.com>"],
+      cc: ["Another Emoji! – 🎁 <testy2#tester1234.com>", "abcd@defd.com"],
+      bcc: ["Yet another emoji! – 🌹 <1234@wsd.com>", "Just ASCII <test@example.com>"],
+      text: "Yo, here's one more emoji: 🆕",
+      html: "<div>Yo, here's one more emoji: 🆕</div>"
+    }
+  end
+
+  test "should encode email parts properly" do
+    # Un-comment this to investigate problems with header encodings
+    #
+    # email_with_unicode_in_header = email_with_unicode_in_header()
+    # rendered_email =
+    #   Mailman.Render.render(email_with_unicode_in_header, %Mailman.EexComposeConfig{})
+    # IO.inspect(rendered_email)
+
+    assert true
   end
 end
