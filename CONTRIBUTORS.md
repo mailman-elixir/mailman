@@ -27,6 +27,7 @@ Thank you to all of these wonderful individuals who have contributed to Mailman:
 * Martin Schurig (https://github.com/schurig)
 * Mathieu Rhéaume (https://github.com/ddrmanxbxfr)
 * Sebastian Kosch (https://github.com/skosch)
+* Kamil Ciemniewski (https://github.com/kamilc)
 
 
 (Please let us know if you should be included on this list.)
