@@ -1,8 +1,11 @@
 # Mailman 👮
 
-![Elixir CI](https://github.com/mailman-elixir/mailman/workflows/Elixir%20CI/badge.svg)
-[![Docs](https://img.shields.io/badge/api-docs-green.svg?style=flat)](https://hexdocs.pm/mailman)
-[![Hex.pm Version](http://img.shields.io/hexpm/v/mailman.svg?style=flat)](https://hex.pm/packages/mailman)
+[![Elixir CI](https://github.com/mailman-elixir/mailman/actions/workflows/elixir.yml/badge.svg)](https://github.com/mailman-elixir/mailman/actions/workflows/elixir.yml)
+[![Module Version](https://img.shields.io/hexpm/v/mailman.svg)](https://hex.pm/packages/mailman)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/mailman/)
+[![Total Download](https://img.shields.io/hexpm/dt/mailman.svg)](https://hex.pm/packages/mailman)
+[![License](https://img.shields.io/hexpm/l/mailman.svg)](https://github.com/mailman-elixir/mailman/blob/master/LICENSE)
+[![Last Updated](https://img.shields.io/github/last-commit/mailman-elixir/mailman.svg)](https://github.com/mailman-elixir/mailman/commits/master)
 
 Mailman lets you send email from your Elixir app.
 
@@ -18,8 +21,17 @@ Mailman lets you send email from your Elixir app.
 
 Mailman is a wrapper around the mighty (but rather low-level) [gen_smtp](https://github.com/vagabond/gen_smtp), the popular Erlang SMTP library.
 
+## Which email library should I choose? Mailman vs. Bamboo vs. Swoosh
+The Elixir ecosystem now offers a number of email libraries to choose from.
 
-## Simple example 
+Mailman has been around the longest. As an Elixir wrapper around the battle-tested [gen_smtp](https://github.com/vagabond/gen_smtp) client, it is designed primarily with SMTP power users in mind. If you are interfacing directly with an SMTP relay, Mailman is for you.
+
+If you instead work with a commercial email service like SendGrid or Mailgun, consider libraries like [Bamboo](https://github.com/thoughtbot/bamboo) and [Swoosh](https://github.com/swoosh/swoosh), which come with clients for these services. Note that both of these libraries offer SMTP adapters as well.
+
+
+## Simple example
+
+Emails are sent using the `Mailman.deliver` function. All you need is the email itself and a `%Mailman.Context{}` configuration struct:
 
 ```elixir
 context = %Mailman.Context{
@@ -55,3 +67,10 @@ email = %Mailman.Email{
 
 Mailman.deliver(email, context)
 ```
+
+## Copyright and License
+
+Copyright (c) 2012 Kamil Ciemniewski
+
+Mailman is released under the MIT License. See the [LICENSE.md](./LICENSE.md) file
+for further details.

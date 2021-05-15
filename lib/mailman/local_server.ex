@@ -1,6 +1,9 @@
 # credo:disable-for-this-file Credo.Check.Readability.FunctionNames
 defmodule Mailman.LocalServer do
-  @moduledoc "Basic SMTP implementation via the gen_smtp_sever_session behavior. Implements relay'ing to external servers."
+  @moduledoc """
+  Basic SMTP implementation via the gen_smtp_sever_session behavior. Implements
+  relay'ing to external servers.
+  """
   @behaviour :gen_smtp_server_session
 
   def init(hostname, _session_count, _address, options) do

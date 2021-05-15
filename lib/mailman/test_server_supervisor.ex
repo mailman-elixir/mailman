@@ -1,5 +1,7 @@
 defmodule Mailman.TestServerSupervisor do
-  @moduledoc "A DynamicSupervisor to manage TestServers, which can get started ad-hoc"
+  @moduledoc """
+  A DynamicSupervisor to manage TestServers, which can get started ad-hoc.
+  """
   use DynamicSupervisor
 
   def start_link() do

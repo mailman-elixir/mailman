@@ -1,5 +1,7 @@
 defmodule Mailman.EexComposer do
-  @moduledoc "Provides functions for rendering from Eex template files"
+  @moduledoc """
+  Provides functions for rendering from Eex template files.
+  """
 
   def compile_part(config, :html, %{html: template, data: data}) do
     if config.html_file do

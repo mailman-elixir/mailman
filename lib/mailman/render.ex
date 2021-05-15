@@ -1,7 +1,11 @@
 defmodule Mailman.Render do
-  @moduledoc "Functions for rendering email messages into strings"
+  @moduledoc """
+  Functions for rendering email messages into strings.
+  """
 
-  @doc "Returns a tuple with all data needed for the underlying adapter to send"
+  @doc """
+  Returns a tuple with all data needed for the underlying adapter to send.
+  """
   def render(email, composer, extra_headers \\ []) do
     email
     # Returns a list of tuples
@@ -200,7 +204,9 @@ defmodule Mailman.Render do
     Mailman.Composer.compile_part(composer, type, email)
   end
 
-  @doc "Returns boolean saying if a value for a tuple is blank as a string or list"
+  @doc """
+  Returns boolean saying if a value for a tuple is blank as a string or list.
+  """
   def not_empty_tuple_value(tuple) when is_tuple(tuple) do
     value = elem(tuple, 1)
     value != nil && value != [] && value != ""

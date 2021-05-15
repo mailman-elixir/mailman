@@ -1,18 +1,18 @@
 defmodule Mailman.Mixfile do
   use Mix.Project
 
+  @source_url "https://github.com/kamilc/mailman"
+  @version "0.4.3"
+
   def project do
     [
       app: :mailman,
       name: "Mailman",
-      source_url: "https://github.com/kamilc/mailman",
-      homepage_url: "https://github.com/kamilc/mailman",
-      description: "Library providing a clean way of defining mailers in Elixir apps",
-      package: package(),
-      version: "0.4.3",
+      version: @version,
       elixir: "~> 1.0",
+      package: package(),
       deps: deps(),
-      docs: docs(),
+      docs: docs()
     ]
   end
 
@@ -25,18 +25,17 @@ defmodule Mailman.Mixfile do
   # and will not be replaced by the newer iconv (see https://github.com/gen-smtp/gen_smtp/issues/95)
   #
   # If the eiconv NIF fails to compile, try updating rebar:
-  #> mix local.rebar
-  #> rm -rf deps
-  #> rm -rf _build
-  #> mix deps.get
-  #> mix
+  # $ mix local.rebar
+  # $ rm -rf deps
+  # $ rm -rf _build
+  # $ mix deps.get
+  # $ mix
 
-  # Returns the list of dependencies in the format:
   defp deps do
     [
       {:eiconv, "~> 1.0.0"},
       {:gen_smtp, "~> 1.0.1"},
-      {:ex_doc, ">= 0.19.1", only: :dev},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:httpoison, "~> 1.6"},
       {:credo, "~> 1.5.0-rc.2", only: [:dev, :test], runtime: false}
     ]
@@ -44,29 +43,35 @@ defmodule Mailman.Mixfile do
 
   defp docs do
     [
-      main: "overview",
-      formatter_opts: [gfm: true],
-      source_url: "https://github.com/mailman-elixir/mailman",
       extras: [
-        "docs/Overview.md",
-        "docs/Email.md",
-        "docs/Rendering.md",
-        "docs/SmtpAdapter.md",
-        "docs/LocalTestAdapters.md",
-        "docs/MixConfig.md",
-        "docs/Delivery.md",
-      ]
+        "CONTRIBUTORS.md",
+        {:"LICENSE.md", [title: "License"]},
+        "README.md",
+        "guides/creating_emails.md",
+        "guides/rendering_using_eex.md",
+        "guides/smtp_adapter_config.md",
+        "guides/local_and_test_adapter_config.md",
+        "guides/configuration_tips.md",
+        "guides/checking_for_successfully_delivery.md"
+      ],
+      groups_for_extras: [
+        "Guides": Path.wildcard("guides/*.md"),
+      ],
+      main: "readme",
+      source_url: @source_url,
+      homepage_url: @source_url,
+      formatters: ["html"]
     ]
   end
 
   defp package do
     [
+      description: "Library providing a clean way of defining mailers in Elixir apps",
       files: ["lib", "docs", "LICENSE", "README", "mix.exs"],
       maintainers: ["Kamil Ciemniewski <ciemniewski.kamil@gmail.com>"],
       licenses: ["MIT"],
       links: %{
-        "GitHub" => "https://github.com/kamilc/mailman",
-        "Docs" => "http://hexdocs.pm/mailman"
+        "GitHub" => @source_url
       }
     ]
   end
