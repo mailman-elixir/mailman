@@ -1,6 +1,7 @@
 defmodule Mailman.TestServer do
   @moduledoc """
   Implementation of the testing SMTP server.
+
   The GenServer state is just a single list of "deliveries" that can be pushed to,
   cleared, and queried.
   """
@@ -14,7 +15,7 @@ defmodule Mailman.TestServer do
   When "global" mode is enabled, the calling process is ignored and a global
   TestServer is used instead. Use this when you need to test e-mail sending
   across multiple processes. Keep in mind that this is not async-safe, and you
-  should specify `async: false` when using ExUnit.
+  should specify `async: false` when using `ExUnit`.
   """
   @spec set_global_mode!(boolean) :: boolean
   def set_global_mode!(toggle) do
@@ -26,7 +27,7 @@ defmodule Mailman.TestServer do
   @doc """
   Starts the TestServer supervisor. Provided for compatibility.
 
-  Mailman.TestServerSupervisor.start_link/0 is preferred, typically in your
+  `Mailman.TestServerSupervisor.start_link/0` is preferred, typically in your
   `test_helper.exs` file.
   """
   def start do

@@ -1,7 +1,11 @@
 defmodule Mailman.ExternalSmtpAdapter do
-  @moduledoc "Adapter for sending email via external SMTP server"
+  @moduledoc """
+  Adapter for sending email via external SMTP server.
+  """
 
-  @doc "Delivers an email based on specified config"
+  @doc """
+  Delivers an email based on specified config.
+  """
   def deliver(config, email, message) do
     relay_config = [
       relay: config.relay,

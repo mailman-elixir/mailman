@@ -1,5 +1,7 @@
 defmodule Mailman.Header do
-  @moduledoc "Represents a Mime-Mail header"
+  @moduledoc """
+  Represents a Mime-Mail header.
+  """
 
   defstruct name: "",
             value: ""

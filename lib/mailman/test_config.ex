@@ -1,5 +1,7 @@
 defmodule Mailman.TestConfig do
-  @moduledoc "Config struct for the testing adapter"
+  @moduledoc """
+  Config struct for the testing adapter.
+  """
 
   defstruct store_deliveries: true
 end

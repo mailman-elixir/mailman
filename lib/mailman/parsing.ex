@@ -1,7 +1,11 @@
 defmodule Mailman.Parsing do
-  @moduledoc "Functions for parsin mail messages into Elixir structs"
+  @moduledoc """
+  Functions for parsing mail messages into Elixir struct.
+  """
 
-  @doc "Parses given mime mail and returns Email"
+  @doc """
+  Parses given MIME mail and returns an email.
+  """
   def parse(message) when is_binary(message) do
     {:ok, parse(:mimemail.decode(message))}
   end
@@ -20,7 +24,9 @@ defmodule Mailman.Parsing do
     }
   end
 
-  @doc "Parses the message and returns Email"
+  @doc """
+  Parses the message and returns an email.
+  """
   def parse!(message_text) do
     case parse(message_text) do
       {:ok, parsed} -> parsed

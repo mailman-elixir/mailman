@@ -1,5 +1,7 @@
 defmodule Mailman.Context do
-  @moduledoc "Defines the configuration for both rendering and sending of messages"
+  @moduledoc """
+  Defines the configuration for both rendering and sending of messages.
+  """
 
   defstruct config: nil, composer: %Mailman.EexComposeConfig{}
 

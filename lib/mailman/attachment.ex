@@ -1,5 +1,8 @@
 defmodule Mailman.Attachment do
-  @moduledoc "A struct defining an attachable file. It automatically detect the mime type based on file extension."
+  @moduledoc """
+  A struct defining an attachable file. It automatically detect the mime type
+  based on file extension.
+  """
 
   defstruct file_name: "",
             mime_type: "",
@@ -718,14 +721,19 @@ defmodule Mailman.Attachment do
     end
   end
 
-  @doc "Get the attachment struct with disposition 'inline'."
+  @doc """
+  Get the attachment struct with disposition 'inline'.
+  """
   @spec inline(String.t(), String.t(), {String.t(), String.t()}) ::
           {:ok, t} | {:error, String.t()}
   def inline(url_or_file_path, file_name \\ nil, mime_tuple \\ nil) do
     create(url_or_file_path, "inline", file_name, mime_tuple)
   end
 
-  @doc "Get the attachment struct with disposition 'inline'. Throw an error if anything goes wrong."
+  @doc """
+  Get the attachment struct with disposition 'inline'. Throw an error if
+  anything goes wrong.
+  """
   @spec inline(String.t(), String.t(), {String.t(), String.t()}) :: t
   def inline!(url_or_file_path, file_name \\ nil, mime_tuple \\ nil) do
     case inline(url_or_file_path, file_name, mime_tuple) do
@@ -734,12 +742,17 @@ defmodule Mailman.Attachment do
     end
   end
 
-  @doc "Get the attachment struct with disposition 'attachment'."
+  @doc """
+  Get the attachment struct with disposition 'attachment'.
+  """
   def attach(url_or_file_path, file_name \\ nil, mime_tuple \\ nil) do
     create(url_or_file_path, "attachment", file_name, mime_tuple)
   end
 
-  @doc "Get the attachment struct with disposition 'attachment'. Throw an error if anything goes wrong."
+  @doc """
+  Get the attachment struct with disposition 'attachment'. Throw an error if
+  anything goes wrong.
+  """
   def attach!(url_or_file_path, file_name \\ nil, mime_tuple \\ nil) do
     case attach(url_or_file_path, file_name, mime_tuple) do
       {:ok, attachment} -> attachment

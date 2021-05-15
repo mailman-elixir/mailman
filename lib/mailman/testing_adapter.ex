@@ -1,5 +1,7 @@
 defmodule Mailman.TestingAdapter do
-  @moduledoc "Implementation of the testing SMTP adapter"
+  @moduledoc """
+  Implementation of the testing SMTP adapter.
+  """
 
   def deliver(config, _email, message) do
     if config.store_deliveries do
