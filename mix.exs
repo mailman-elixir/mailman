@@ -2,7 +2,7 @@ defmodule Mailman.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/kamilc/mailman"
-  @version "0.4.3"
+  @version "0.4.4"
 
   def project do
     [
