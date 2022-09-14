@@ -24,7 +24,7 @@ defmodule MailmanTest do
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
       to: ["ciemniewski.kamil@gmail.com"],
-      cc: ["testy2#tester1234.com", "abcd@defd.com"],
+      cc: ["testy2@tester1234.com", "abcd@defd.com"],
       bcc: ["1234@wsd.com"],
       data: [
         name: "Yo"
@@ -46,7 +46,7 @@ defmodule MailmanTest do
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
       to: ["ciemniewski.kamil@gmail.com"],
-      cc: ["abcd@defd.com"],
+      cc: ["abcde@defde.com"],
       bcc: ["1234@wsd.com", "5678@wsd.com"],
       data: [
         name: "Yo"
@@ -215,7 +215,7 @@ defmodule MailmanTest do
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
       to: ["ciemniewski.kamil@gmail.com"],
-      cc: ["testy2#tester1234.com", "abcd@defd.com"],
+      cc: ["testy2@tester1234.com", "abcd@defd.com"],
       bcc: ["1234@wsd.com"],
       data: [
         name: "Yo"
@@ -264,7 +264,7 @@ defmodule MailmanTest do
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
       to: ["ciemniewski.kamil@gmail.com"],
-      cc: ["testy2#tester1234.com", "abcd@defd.com"],
+      cc: ["testy2@tester1234.com", "abcd@defd.com"],
       bcc: ["1234@wsd.com"],
       data: [
         name: "Yo"
@@ -310,7 +310,7 @@ defmodule MailmanTest do
       from: "mailman@elixir.com",
       reply_to: "reply@example.com",
       to: ["ciemniewski.kamil@gmail.com"],
-      cc: ["testy2#tester1234.com", "abcd@defd.com"],
+      cc: ["testy2@tester1234.com", "abcd@defd.com"],
       bcc: ["1234@wsd.com"],
       data: [
         name: "Yo"
