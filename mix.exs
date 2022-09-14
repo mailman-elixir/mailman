@@ -2,7 +2,7 @@ defmodule Mailman.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/kamilc/mailman"
-  @version "0.4.4"
+  @version "0.4.5"
 
   def project do
     [
@@ -34,7 +34,7 @@ defmodule Mailman.Mixfile do
   defp deps do
     [
       {:eiconv, "~> 1.0.0"},
-      {:gen_smtp, "~> 1.1.1"},
+      {:gen_smtp, "~> 1.2.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:httpoison, "~> 1.6"},
       {:credo, "~> 1.5.0-rc.2", only: [:dev, :test], runtime: false}
