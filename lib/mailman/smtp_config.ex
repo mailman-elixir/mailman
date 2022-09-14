@@ -10,8 +10,9 @@ defmodule Mailman.SmtpConfig do
     port: 1111,
     ssl: false,
     tls: :never,
+    hostname: nil,
+    no_mx_lookups: false,
     auth: :always
-
 end
 
 defimpl Mailman.Adapter, for: Mailman.SmtpConfig do

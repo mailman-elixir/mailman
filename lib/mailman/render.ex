@@ -146,13 +146,13 @@ defmodule Mailman.Render do
   def headers_for(email) do
     [
       {"From", email.from},
-      {"To", email.to |> normalize_addresses |> Enum.join(",")},
+      {"To", email.to |> normalize_addresses |> Enum.join(", ")},
       {"Subject", email.subject},
       {"Reply-To", email.reply_to},
-      {"Cc", email.cc |> as_list |> normalize_addresses |> Enum.join(", ") |> as_list},
-      {"Bcc", email.bcc |> as_list |> normalize_addresses |> Enum.join(", ") |> as_list}
+      {"Cc", email.cc |> as_list |> normalize_addresses |> Enum.join(", ")},
+      {"Bcc", email.bcc |> as_list |> normalize_addresses |> Enum.join(", ")}
     ]
-    |> Enum.filter(fn i -> elem(i, 1) != [] end)
+    |> Enum.filter(fn i -> elem(i, 1) != "" end)
   end
 
   def as_list(value) when is_list(value) do

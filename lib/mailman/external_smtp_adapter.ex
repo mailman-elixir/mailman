@@ -7,16 +7,6 @@ defmodule Mailman.ExternalSmtpAdapter do
   Delivers an email based on specified config.
   """
   def deliver(config, email, message) do
-    relay_config = [
-      relay: config.relay,
-      username: config.username,
-      password: config.password,
-      port: config.port,
-      ssl: config.ssl,
-      tls: config.tls,
-      auth: config.auth
-    ]
-
     from_envelope_address = email.from
     to_envelope_address = email.to
 
@@ -27,7 +17,7 @@ defmodule Mailman.ExternalSmtpAdapter do
           to_envelope_address,
           message
         },
-        relay_config
+        build_relay_config(config)
       )
 
     case ret do
@@ -35,5 +25,32 @@ defmodule Mailman.ExternalSmtpAdapter do
       {:error, _} -> ret
       _ -> {:ok, message}
     end
+  end
+
+  defp build_relay_config(%{hostname: nil} = config) do
+    [
+      relay: config.relay,
+      username: config.username,
+      password: config.password,
+      port: config.port,
+      ssl: config.ssl,
+      tls: config.tls,
+      auth: config.auth,
+      no_mx_lookups: config.no_mx_lookups
+    ]
+  end
+
+  defp build_relay_config(config) do
+    [
+      relay: config.relay,
+      username: config.username,
+      password: config.password,
+      port: config.port,
+      ssl: config.ssl,
+      tls: config.tls,
+      auth: config.auth,
+      hostname: config.hostname,
+      no_mx_lookups: config.no_mx_lookups
+    ]
   end
 end
