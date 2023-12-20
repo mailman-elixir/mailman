@@ -10,6 +10,7 @@ defmodule Mailman.SmtpConfig do
     port: 1111,
     ssl: false,
     tls: :never,
+    hostname: nil,
     auth: :always
 
 end
